@@ -29,6 +29,14 @@ typedef struct Timer {
     int time;
 } Timer;
 
+typedef struct TileMap {
+    int            address;
+    int            imagew, imageh;
+    int            mapw, maph;
+    int            drawx, drawy;
+    unsigned char *map;
+} TileMap;
+
 // --- 游戏逻辑 ---
 void game_main();
 void gameTick();
@@ -46,6 +54,8 @@ int getKey();
 // --- 几何图形绘制 ---
 // --- 字符串与文本 ---
 // --- 瓦片地图 ---
+void loadTileMap(TileMap *tileMap);
+void removeTileMap(TileMap *tileMap);
 // --- 计时器 ---
 void loadTimer(Timer *timer);
 void removeTimer(Timer *timer);

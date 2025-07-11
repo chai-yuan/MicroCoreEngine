@@ -1,4 +1,4 @@
-PROJECT_NAME = MicroCoreEngine
+PROJECT_NAME = MicroCoreEngine.elf
 
 GAME ?= image
 
