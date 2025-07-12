@@ -36,6 +36,7 @@ typedef struct TileMap {
 typedef struct Sprite {
     int x, y;
     int speedx, speedy;
+    int accelerationx, accelerationy;
 
     unsigned char collision;
     int           left, right, top, bottom;
@@ -50,8 +51,7 @@ void game_main();
 void gameTick();
 void setFramerate(int fps);
 // --- 屏幕操作 ---
-void drawScreen();
-void clearScreen();
+void screenRoll(int x, int y);
 // --- 图像操作 ---
 void loadImage(unsigned char *image, int address, int len);
 void drawImage(int address, int x, int y, int w, int h);

@@ -10,6 +10,7 @@
 
 extern struct TileMap *g_tileMap;
 extern struct Sprite  *g_sprite[SPRITE_NUM];
+extern int             g_screenx, g_screeny;
 
 void timerTick();
 void drawTileMap(TileMap *tileMap);

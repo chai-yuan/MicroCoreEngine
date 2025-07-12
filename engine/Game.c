@@ -27,6 +27,8 @@ int checkSpriteTilemapCollision(Sprite *sprite) {
 
 void spriteMove(Sprite *sprite) {
     sprite->x += sprite->speedx;
+    sprite->speedx += sprite->accelerationx;
+
     if (checkSpriteTilemapCollision(sprite)) {
         // 如果发生了碰撞，将精灵移回碰撞前的位置
         // 然后根据速度方向，将其对齐到瓦片的边缘
@@ -41,6 +43,8 @@ void spriteMove(Sprite *sprite) {
     }
 
     sprite->y += sprite->speedy;
+    sprite->speedy += sprite->accelerationy;
+
     if (checkSpriteTilemapCollision(sprite)) {
         if (sprite->speedy > 0) { // 向下移动导致碰撞 (落地)
             int tile_bottom_edge = (sprite->y + sprite->bottom) / g_tileMap->imageh * g_tileMap->imageh;
