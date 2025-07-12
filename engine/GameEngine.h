@@ -37,6 +37,14 @@ typedef struct TileMap {
     unsigned char *map;
 } TileMap;
 
+typedef struct Sprite {
+    int x, y;
+    int speedx, speedy;
+    int imagew, imageh;
+    int address;
+    int imageidx;
+} Sprite;
+
 // --- 游戏逻辑 ---
 void game_main();
 void gameTick();
@@ -51,6 +59,8 @@ void loadPalette(Palette *palette);
 // --- 输入操作 ---
 int getKey();
 // --- Sprite 操作 ---
+void loadSprite(Sprite *sprite);
+void removeSprite(Sprite *sprite);
 // --- 几何图形绘制 ---
 // --- 字符串与文本 ---
 // --- 瓦片地图 ---

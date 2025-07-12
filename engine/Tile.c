@@ -4,14 +4,18 @@ struct TileMap *g_tileMap[TILEMAP_NUM] = {0};
 
 void loadTileMap(TileMap *tileMap) {
     for (int i = 0; i < TILEMAP_NUM; i++)
-        if (g_tileMap[i] == 0)
+        if (g_tileMap[i] == 0) {
             g_tileMap[i] = tileMap;
+            return;
+        }
 }
 
 void removeTileMap(TileMap *tileMap) {
     for (int i = 0; i < TILEMAP_NUM; i++)
-        if (g_tileMap[i] == tileMap)
+        if (g_tileMap[i] == tileMap) {
             g_tileMap[i] = 0;
+            return;
+        }
 }
 
 void drawTileMap(TileMap *tileMap) {

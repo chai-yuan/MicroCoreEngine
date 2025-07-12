@@ -7,12 +7,15 @@
 #define IMAGES_SIZE 1024 * 32
 #define TIMER_NUM 4
 #define TILEMAP_NUM 2
+#define SPRITE_NUM 4
 
 extern Palette        *g_palette;
 extern unsigned char   images[IMAGES_SIZE];
 extern struct TileMap *g_tileMap[TILEMAP_NUM];
+extern struct Sprite  *g_sprite[SPRITE_NUM];
 
 void timerTick();
 void drawTileMap(TileMap *tileMap);
+void drawSprite(Sprite *sprite);
 
 #endif // RETRO_ENGINE_H

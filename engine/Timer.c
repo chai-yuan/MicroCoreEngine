@@ -4,14 +4,18 @@ struct Timer *g_timer[TIMER_NUM] = {0};
 
 void loadTimer(Timer *timer) {
     for (int i = 0; i < TIMER_NUM; i++)
-        if (g_timer[i] == 0)
+        if (g_timer[i] == 0) {
             g_timer[i] = timer;
+            return;
+        }
 }
 
 void removeTimer(Timer *timer) {
     for (int i = 0; i < TIMER_NUM; i++)
-        if (g_timer[i] == timer)
+        if (g_timer[i] == timer) {
             g_timer[i] = 0;
+            return;
+        }
 }
 
 int  lastCheckTime = 0;
