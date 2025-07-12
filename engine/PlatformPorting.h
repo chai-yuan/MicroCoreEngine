@@ -11,11 +11,12 @@
  */
 typedef struct {
     // 必须实现
-    int (*getKey)();
     int (*getTime)();
     void (*drawScreen)();
+    unsigned char (*getKey)();
     void (*drawPixel)(int x, int y, const unsigned int r5g6b5);
     // 可选实现
+    void (*setFramerate)(int fps);
     void (*loadImage)(const unsigned char *image, int addr, int len);
     void (*drawImage)(int addr, int x, int y, int w, int h);
 } platform_api_t;

@@ -10,7 +10,10 @@
 SDL_Window   *window   = NULL;
 SDL_Renderer *renderer = NULL;
 
-#define INT2RGB(r5g6b5) ((r5g6b5 >> 11) & 0x1f) << 3, ((r5g6b5 >> 5) & 0x3f) << 2, (r5g6b5 & 0x1f) << 3, 255
+int g_waittime = 0;
+
+#define INT2RGB(r5g6b5)                                                                                                \
+    ((r5g6b5 >> 11) & 0x1f) << 3, ((r5g6b5 >> 5) & 0x3f) << 2, (r5g6b5 & 0x1f) << 3, 1
 
 int sdl_init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -42,24 +45,37 @@ void sdl_drawscreen() {
         }
     }
     SDL_RenderPresent(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    static int last_time = 0;
+    if (last_time == 0)
+        last_time = SDL_GetTicks();
+
+    while (SDL_GetTicks() < last_time + g_waittime)
+        ;
+    last_time = SDL_GetTicks();
 }
 
 int sdl_gettimer() { return SDL_GetTicks(); }
 
-int sdl_getkey() {
-    const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
-    int          key              = 0;
+void sdl_setfps(int fps) { g_waittime = 1000 / fps; }
 
-    if (currentKeyStates[SDL_SCANCODE_W]) {
+unsigned char sdl_getkey() {
+    const Uint8  *currentKeyStates = SDL_GetKeyboardState(NULL);
+    unsigned char key              = 0;
+
+    if (currentKeyStates[SDL_SCANCODE_UP]) {
         key |= KEY_UP;
     }
-    if (currentKeyStates[SDL_SCANCODE_S]) {
+    if (currentKeyStates[SDL_SCANCODE_DOWN]) {
         key |= KEY_DOWN;
     }
-    if (currentKeyStates[SDL_SCANCODE_D]) {
+    if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
         key |= KEY_RIGHT;
     }
-    if (currentKeyStates[SDL_SCANCODE_A]) {
+    if (currentKeyStates[SDL_SCANCODE_LEFT]) {
         key |= KEY_LEFT;
     }
 

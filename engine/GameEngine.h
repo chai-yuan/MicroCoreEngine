@@ -30,24 +30,27 @@ typedef struct Timer {
 } Timer;
 
 typedef struct TileMap {
+    int            x, y;
     int            address;
     int            imagew, imageh;
     int            mapw, maph;
-    int            drawx, drawy;
     unsigned char *map;
 } TileMap;
 
 typedef struct Sprite {
     int x, y;
     int speedx, speedy;
-    int imagew, imageh;
+    int left, right, top, bottom;
+
     int address;
+    int imagew, imageh;
     int imageidx;
 } Sprite;
 
 // --- 游戏逻辑 ---
 void game_main();
 void gameTick();
+void setFramerate(int fps);
 // --- 屏幕操作 ---
 void drawScreen();
 void clearScreen();
@@ -57,7 +60,7 @@ void drawImage(int address, int x, int y, int w, int h);
 // --- 调色板与颜色 ---
 void loadPalette(Palette *palette);
 // --- 输入操作 ---
-int getKey();
+unsigned char getKey();
 // --- Sprite 操作 ---
 void loadSprite(Sprite *sprite);
 void removeSprite(Sprite *sprite);

@@ -1,3 +1,3 @@
 #include "GameEnginePriv.h"
 
-int getkey() { return g_platform_api.getKey(); }
+unsigned char getKey() { return g_platform_api.getKey(); }

@@ -1,33 +1,24 @@
 #include "GameEnginePriv.h"
 
-struct TileMap *g_tileMap[TILEMAP_NUM] = {0};
+struct TileMap *g_tileMap = 0;
 
-void loadTileMap(TileMap *tileMap) {
-    for (int i = 0; i < TILEMAP_NUM; i++)
-        if (g_tileMap[i] == 0) {
-            g_tileMap[i] = tileMap;
-            return;
-        }
-}
+void loadTileMap(TileMap *tileMap) { g_tileMap = tileMap; }
 
 void removeTileMap(TileMap *tileMap) {
-    for (int i = 0; i < TILEMAP_NUM; i++)
-        if (g_tileMap[i] == tileMap) {
-            g_tileMap[i] = 0;
-            return;
-        }
+    if (g_tileMap == tileMap)
+        g_tileMap = 0;
 }
 
 void drawTileMap(TileMap *tileMap) {
     int tileSize = tileMap->imagew * tileMap->imageh;
-    int x = tileMap->drawx, y = tileMap->drawy;
+    int x = tileMap->x, y = tileMap->y;
 
     for (int idx0 = 0; idx0 < tileMap->maph; idx0++) {
-        x = tileMap->drawx;
+        x = tileMap->x;
 
         for (int idx1 = 0; idx1 < tileMap->mapw; idx1++) {
             int tile   = tileMap->map[idx0 * tileMap->mapw + idx1];
-            int offset = tileSize * (tile - 1);
+            int offset = tileSize * (tile - 1) / 2;
 
             if (tile)
                 drawImage(tileMap->address + offset, x, y, tileMap->imagew, tileMap->imageh);
