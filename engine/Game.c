@@ -16,7 +16,7 @@ int checkSpriteTilemapCollision(Sprite *sprite) {
 
     for (int ty = tile_top; ty <= tile_bottom; ++ty) {
         for (int tx = tile_left; tx <= tile_right; ++tx) {
-            if (g_tileMap->map[tx + ty * g_tileMap->mapw] == 1) {
+            if (g_tileMap->collision[tx + ty * g_tileMap->mapw] & sprite->collision) {
                 return 1;
             }
         }
@@ -33,7 +33,7 @@ void spriteMove(Sprite *sprite) {
         if (sprite->speedx > 0) { // 向右移动导致碰撞
             int tile_right_edge = (sprite->x + sprite->right) / g_tileMap->imagew * g_tileMap->imagew;
             sprite->x           = tile_right_edge - sprite->right - 1; // 对齐到碰撞砖块的左边
-        } else if (sprite->speedx < 0) {                                // 向左移动导致碰撞
+        } else if (sprite->speedx < 0) {                               // 向左移动导致碰撞
             int tile_left_edge = ((sprite->x + sprite->left) / g_tileMap->imagew + 1) * g_tileMap->imagew;
             sprite->x          = tile_left_edge; // 对齐到碰撞砖块的右边
         }

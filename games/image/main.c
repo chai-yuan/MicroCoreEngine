@@ -2,8 +2,9 @@
 
 unsigned char w[] = {0xff, 0xff, 0xff, 0xfb, 0xfc, 0xcf, 0xcc, 0xcb, 0xff, 0xcc, 0xcc, 0xcb, 0xfc, 0xcc, 0xbc, 0xbb,
                      0xfc, 0xbc, 0xcc, 0xcb, 0xfc, 0xcc, 0xcb, 0xcb, 0xfc, 0xcc, 0xbc, 0xcb, 0xff, 0xbb, 0xbb, 0xbb};
-unsigned char f[] = {0xcc, 0xff, 0xff, 0xff, 0xcc, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xcc, 0xcc, 0xfc, 0xfc, 0xcc, 0xfc,
-                     0xcf, 0xcc, 0xcc, 0xcf, 0xcf, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcf, 0xcc, 0xcc, 0xff};
+unsigned char f[] = {0x88, 0x88, 0x57, 0x75, 0x88, 0x58, 0xd8, 0x85, 0x78, 0x88, 0xd7, 0x88, 0x78, 0x88, 0x8d, 0xd8,
+                     0x78, 0x88, 0x57, 0x58, 0x75, 0x8d, 0x7d, 0x58, 0xdd, 0x8d, 0xdd, 0x88, 0x88, 0x88, 0x88, 0xdd};
+;
 
 unsigned char maze[16][16] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1},
@@ -24,19 +25,28 @@ void game_main() {
     loadImage(f, 1032, sizeof(f));
 
     Sprite sprite = {
-        .address  = 0,
-        .imageh   = 7,
-        .imagew   = 8,
-        .left     = 0,
-        .right    = 7,
-        .top      = 0,
-        .bottom   = 7,
-        .x        = 8,
-        .y        = 8,
-        .imageidx = 0,
+        .address   = 0,
+        .imageh    = 7,
+        .imagew    = 8,
+        .left      = 0,
+        .right     = 6,
+        .top       = 0,
+        .bottom    = 7,
+        .collision = 1,
+        .x         = 8,
+        .y         = 8,
+        .imageidx  = 0,
     };
 
-    TileMap tilemap = {.address = 1000, .mapw = 16, .maph = 16, .map = maze, .imageh = 8, .imagew = 8, .x = 0, .y = 0};
+    TileMap tilemap = {.address   = 1000,
+                       .mapw      = 16,
+                       .maph      = 16,
+                       .map       = (unsigned char *)maze,
+                       .collision = (unsigned char *)maze,
+                       .imageh    = 8,
+                       .imagew    = 8,
+                       .x         = 0,
+                       .y         = 0};
 
     loadTileMap(&tilemap);
     loadSprite(&sprite);

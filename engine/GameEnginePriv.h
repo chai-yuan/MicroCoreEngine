@@ -8,8 +8,6 @@
 #define TIMER_NUM 4
 #define SPRITE_NUM 4
 
-extern Palette        *g_palette;
-extern unsigned char   images[IMAGES_SIZE];
 extern struct TileMap *g_tileMap;
 extern struct Sprite  *g_sprite[SPRITE_NUM];
 

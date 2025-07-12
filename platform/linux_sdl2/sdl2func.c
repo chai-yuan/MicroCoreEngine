@@ -1,4 +1,4 @@
-#include "GameEngine.h"
+#include "GameEnginePriv.h"
 #include <SDL.h>
 
 // 放大倍率
@@ -7,13 +7,14 @@
 #define SCREEN_WIDTH (LOGICAL_WIDTH * SCALE_FACTOR)
 #define SCREEN_HEIGHT (LOGICAL_HEIGHT * SCALE_FACTOR)
 
-SDL_Window   *window   = NULL;
-SDL_Renderer *renderer = NULL;
+// 游戏数据
+unsigned char images[IMAGES_SIZE];
+int           palette[16] = {0x0,    0xef18, 0xb9c9, 0x7db6, 0x49ea, 0x6d2d, 0x2a0d, 0xddcb,
+                             0xb46d, 0x42cb, 0xbb09, 0x31a6, 0x73ae, 0x8d4c, 0x3df9, 0xbdd7};
 
-int g_waittime = 0;
-
-#define INT2RGB(r5g6b5)                                                                                                \
-    ((r5g6b5 >> 11) & 0x1f) << 3, ((r5g6b5 >> 5) & 0x3f) << 2, (r5g6b5 & 0x1f) << 3, 1
+SDL_Window   *window     = NULL;
+SDL_Renderer *renderer   = NULL;
+int           g_waittime = 0;
 
 int sdl_init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -31,12 +32,17 @@ void sdl_cleanup() {
     SDL_Quit();
 }
 
-void sdl_putpixel(int x, int y, unsigned int r5g6b5) {
-    SDL_SetRenderDrawColor(renderer, INT2RGB(r5g6b5));
-    SDL_RenderDrawPoint(renderer, x, y);
+void sdl_loadPalette(int *p) {
+    for (int i = 0; i < 16; i++)
+        palette[i] = p[i];
 }
 
 void sdl_drawscreen() {
+    static Uint32 last_time = 0;
+    if (last_time == 0) {
+        last_time = SDL_GetTicks();
+    }
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -44,17 +50,18 @@ void sdl_drawscreen() {
             exit(0);
         }
     }
-    SDL_RenderPresent(renderer);
 
+    SDL_RenderPresent(renderer);
+    // 清空用于下一次绘制
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    static int last_time = 0;
-    if (last_time == 0)
-        last_time = SDL_GetTicks();
+    Uint32 current_time = SDL_GetTicks();
+    Uint32 frame_time   = current_time - last_time;
 
-    while (SDL_GetTicks() < last_time + g_waittime)
-        ;
+    if (frame_time < g_waittime) {
+        SDL_Delay(g_waittime - frame_time);
+    }
     last_time = SDL_GetTicks();
 }
 
@@ -80,4 +87,92 @@ unsigned char sdl_getkey() {
     }
 
     return key;
+}
+
+void sdl_loadImage(const unsigned char *image, int address, int len) {
+    for (int i = 0; i < len; i++)
+        images[address + i] = image[i];
+}
+
+void sdl_drawImagePalette(int address, int x, int y, int w, int h) {
+    if (address + w * h > IMAGES_SIZE) {
+        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h);
+        return;
+    }
+
+    Uint8 *pixel_data = (Uint8 *)(images + address);
+
+    for (int row = 0; row < h; row++) {
+        for (int col = 0; col < w; col += 2) {
+            int index = (row * w + col) / 2;
+
+            Uint16 color16 = palette[pixel_data[index] >> 4];
+            if (color16 != 0) {
+                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+                Uint8 b = (color16 & 0x001F) << 3;
+
+                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+                SDL_RenderDrawPoint(renderer, x + col, y + row);
+            }
+
+            color16 = palette[pixel_data[index] & 0xf];
+            if (color16 != 0) {
+                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+                Uint8 b = (color16 & 0x001F) << 3;
+
+                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+                SDL_RenderDrawPoint(renderer, x + col + 1, y + row);
+            }
+        }
+    }
+}
+
+void sdl_drawImage1bit(int address, int x, int y, int w, int h) {
+    if (address + w * h > IMAGES_SIZE) {
+        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h);
+        return;
+    }
+
+    Uint8 *pixel_data = (Uint8 *)(images + address);
+
+    for (int row = 0; row < h; ++row) {
+        for (int col = 0; col < w; col += 8) {
+            int index = (row * w + col) / 8;
+
+            Uint8 color1 = pixel_data[index];
+            for (int i = 0; i < 8; i++) {
+                // TODO
+            }
+        }
+    }
+}
+
+void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
+    if (address + w * h * 2 > IMAGES_SIZE) {
+        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h * 2);
+        return;
+    }
+
+    Uint16 *pixel_data = (Uint16 *)(images + address);
+
+    for (int row = 0; row < h; ++row) {
+        for (int col = 0; col < w; ++col) {
+            int index = row * w + col;
+
+            Uint16 color16 = pixel_data[index];
+
+            if (color16 == 0) {
+                continue;
+            }
+
+            Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+            Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+            Uint8 b = (color16 & 0x001F) << 3;
+
+            SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+            SDL_RenderDrawPoint(renderer, x + col, y + row);
+        }
+    }
 }

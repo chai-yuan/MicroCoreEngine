@@ -20,11 +20,6 @@ typedef enum KeyCode {
     KEY_START  = 128 // Start 键
 } KeyCode;
 
-typedef struct Palette {
-    unsigned int palette[16];
-    int          currentColorIndex;
-} Palette;
-
 typedef struct Timer {
     int time;
 } Timer;
@@ -35,12 +30,15 @@ typedef struct TileMap {
     int            imagew, imageh;
     int            mapw, maph;
     unsigned char *map;
+    unsigned char *collision;
 } TileMap;
 
 typedef struct Sprite {
     int x, y;
     int speedx, speedy;
-    int left, right, top, bottom;
+
+    unsigned char collision;
+    int           left, right, top, bottom;
 
     int address;
     int imagew, imageh;
@@ -58,7 +56,7 @@ void clearScreen();
 void loadImage(unsigned char *image, int address, int len);
 void drawImage(int address, int x, int y, int w, int h);
 // --- 调色板与颜色 ---
-void loadPalette(Palette *palette);
+void loadPalette(int *palette);
 // --- 输入操作 ---
 unsigned char getKey();
 // --- Sprite 操作 ---

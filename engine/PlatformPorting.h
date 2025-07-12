@@ -5,18 +5,14 @@
  * @brief 平台功能接口结构体
  *
  * 包含一系列函数指针，指向平台相关的具体实现。
- * - **必须 (Mandatory)**: 标有此标记的函数指针必须被实现，不能为 NULL。
- * - **可选 (Optional)**: 标有此标记的函数指针可以为 NULL。
  *   游戏逻辑在使用前应检查其是否为 NULL。
  */
 typedef struct {
-    // 必须实现
     int (*getTime)();
     void (*drawScreen)();
     unsigned char (*getKey)();
-    void (*drawPixel)(int x, int y, const unsigned int r5g6b5);
-    // 可选实现
     void (*setFramerate)(int fps);
+    void (*loadPalette)(int *palette);
     void (*loadImage)(const unsigned char *image, int addr, int len);
     void (*drawImage)(int addr, int x, int y, int w, int h);
 } platform_api_t;
