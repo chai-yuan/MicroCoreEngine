@@ -20,6 +20,9 @@ void removeTimer(Timer *timer) {
 
 int  lastCheckTime = 0;
 void timerTick() {
+    if (g_platform_api.getTime == 0)
+        return;
+
     int wait      = g_platform_api.getTime() - lastCheckTime;
     lastCheckTime = wait + lastCheckTime;
 

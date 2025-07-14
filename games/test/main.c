@@ -59,7 +59,7 @@ void game_main() {
         .bottom        = 12,
         .collision     = 3,
         .x             = 50,
-        .y             = 10,
+        .y             = 65,
         .accelerationy = 1,
         .imageidx      = 0,
     };

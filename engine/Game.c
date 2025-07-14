@@ -70,7 +70,8 @@ void gameTick() {
         if (g_sprite[i])
             drawSprite(g_sprite[i]);
 
-    g_platform_api.drawScreen();
+    if (g_platform_api.drawScreen)
+        g_platform_api.drawScreen();
 }
 
 void setFramerate(int fps) {
