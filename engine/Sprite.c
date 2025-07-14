@@ -22,5 +22,5 @@ void drawSprite(Sprite *sprite) {
     int imageSize = (sprite->imageh * sprite->imagew) / 2;
     int imageAddr = sprite->address + sprite->imageidx * imageSize;
 
-    drawImage(imageAddr, sprite->x, sprite->y, sprite->imagew, sprite->imageh);
+    drawImage(imageAddr, sprite->type, sprite->x, sprite->y, sprite->imagew, sprite->imageh);
 }

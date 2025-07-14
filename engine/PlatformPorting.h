@@ -14,7 +14,8 @@ typedef struct {
     void (*setFramerate)(int fps);
     void (*loadPalette)(int *palette);
     void (*loadImage)(const unsigned char *image, int addr, int len);
-    void (*drawImage)(int addr, int x, int y, int w, int h);
+    void (*drawImagePalette)(int addr, int x, int y, int w, int h);
+    void (*drawImageRGB565)(int addr, int x, int y, int w, int h);
 } platform_api_t;
 
 /**

@@ -27,11 +27,13 @@ typedef struct Timer {
 
 typedef struct TileMap {
     int            x, y;
-    int            address;
-    int            imagew, imageh;
     int            mapw, maph;
     unsigned char *map;
     unsigned char *collision;
+
+    int       address;
+    ImageType type;
+    int       imagew, imageh;
 } TileMap;
 
 typedef struct Sprite {
@@ -42,16 +44,18 @@ typedef struct Sprite {
     unsigned char collision;
     int           left, right, top, bottom;
 
-    int address;
-    int imagew, imageh;
-    int imageidx;
+    int       address;
+    ImageType type;
+    int       imagew, imageh;
+    int       imageidx;
 } Sprite;
 
 typedef struct Background {
     int x, y;
 
-    int address;
-    int imagew, imageh;
+    int       address;
+    ImageType type;
+    int       imagew, imageh;
 } Background;
 
 // --- 游戏逻辑 ---
@@ -62,7 +66,7 @@ void setFramerate(int fps);
 void screenRoll(int x, int y);
 // --- 图像操作 ---
 void loadImage(const unsigned char *image, int address, int len);
-void drawImage(int address, int x, int y, int w, int h);
+void drawImage(int address, ImageType type, int x, int y, int w, int h);
 // --- 调色板与颜色 ---
 void loadPalette(int *palette);
 // --- 输入操作 ---

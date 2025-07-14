@@ -21,7 +21,7 @@ void drawTileMap(TileMap *tileMap) {
             int offset = tileSize * (tile - 1) / 2;
 
             if (tile)
-                drawImage(tileMap->address + offset, x, y, tileMap->imagew, tileMap->imageh);
+                drawImage(tileMap->address + offset, tileMap->type, x, y, tileMap->imagew, tileMap->imageh);
 
             x += tileMap->imagew;
         }

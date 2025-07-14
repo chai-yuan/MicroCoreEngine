@@ -129,26 +129,6 @@ void sdl_drawImagePalette(int address, int x, int y, int w, int h) {
     }
 }
 
-void sdl_drawImage1bit(int address, int x, int y, int w, int h) {
-    if (address + w * h > IMAGES_SIZE) {
-        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h);
-        return;
-    }
-
-    Uint8 *pixel_data = (Uint8 *)(images + address);
-
-    for (int row = 0; row < h; ++row) {
-        for (int col = 0; col < w; col += 8) {
-            int index = (row * w + col) / 8;
-
-            Uint8 color1 = pixel_data[index];
-            for (int i = 0; i < 8; i++) {
-                // TODO
-            }
-        }
-    }
-}
-
 void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
     if (address + w * h * 2 > IMAGES_SIZE) {
         SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h * 2);
