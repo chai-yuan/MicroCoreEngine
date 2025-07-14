@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C像素游戏Web工具集</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <nav id="tool-nav" class="tool-nav">
+            <h1 class="nav-header">工具列表</h1>
+            <ul id="tool-list">
+                <!-- 工具链接将由JS动态生成 -->
+            </ul>
+        </nav>
+
+        <!-- 工具主内容区域 -->
+        <main id="tool-container" class="tool-container">
+            <!-- 当前激活的工具UI将在这里显示 -->
+        </main>
+    </div>
+
+    <!-- 引入JS文件 -->
+    <script src="js/framework.js"></script>
+    <script src="js/imageToCArrayTool.js"></script>
+    <script src="js/anotherCoolTool.js"></script>
+    <script src="js/anotherCoolTool.js"></script>
+
+    <!-- 启动应用 -->
+    <script>
+        // 当DOM加载完毕后，初始化应用
+        document.addEventListener('DOMContentLoaded', () => {
+            PixelToolApp.init();
+        });
+    </script>
+
+</body>
+</html>
