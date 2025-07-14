@@ -1,4 +1,7 @@
 #include "GameEngine.h"
+#include "bg.img.h"
+#include "person.img.h"
+#include "person_run.img.h"
 
 unsigned char floor1[] = {
     0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x33, 0x33, 0x13, 0x33, 0x33, 0x31, 0x33, 0x33, 0x33, 0x33, 0x33,
@@ -34,34 +37,29 @@ unsigned char level0[] = {
     2, 2, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 };
 
-// 8x12
-unsigned char person[] = {0x00, 0xaa, 0x00, 0x00, 0x0a, 0xaa, 0xa0, 0x00, 0xaa, 0xaa, 0xa0, 0x00, 0xa1, 0x61,
-                          0x60, 0x00, 0xaa, 0x11, 0x10, 0x00, 0x08, 0x77, 0x00, 0x00, 0x87, 0x77, 0x70, 0x00,
-                          0x77, 0xbb, 0xbb, 0xbb, 0x7b, 0xb7, 0x07, 0x10, 0x01, 0x77, 0x00, 0x00, 0x07, 0x07,
-                          0x00, 0x00, 0x08, 0x08, 0x00, 0x00, 0x00, 0xaa, 0x00, 0x00, 0x0a, 0xaa, 0xa0, 0x00,
-                          0xaa, 0xaa, 0xa0, 0x00, 0xa1, 0x61, 0x60, 0x00, 0xa1, 0x11, 0x10, 0x00, 0x08, 0x77,
-                          0x00, 0x00, 0x87, 0x77, 0x70, 0x00, 0x77, 0x77, 0x07, 0x00, 0x71, 0xbb, 0xbb, 0xbb,
-                          0x0b, 0x77, 0x00, 0x10, 0x07, 0x00, 0x70, 0x00, 0x80, 0x00, 0x80, 0x00};
-
 void game_main() {
-    loadImage(person, 0, sizeof(person));
     loadImage(floor1, 1000, sizeof(floor1));
     loadImage(floor2, 1000 + 128, sizeof(floor2));
     loadImage(wall1, 1000 + 256, sizeof(wall1));
 
+    loadImage(person_data, 3000, sizeof(person_data));
+    loadImage(bg_data, 7000, sizeof(bg_data));
+    loadImage(person_run_data, 30000, sizeof(person_run_data));
+
     Sprite sprite = {
-        .address       = 0,
-        .imageh        = 12,
-        .imagew        = 8,
-        .left          = 0,
-        .right         = 6,
+        .address       = 3000,
+        .imageh        = 32,
+        .imagew        = person_width,
+        .left          = 5,
+        .right         = person_width - 10,
         .top           = 0,
-        .bottom        = 12,
+        .bottom        = 32,
         .collision     = 3,
         .x             = 50,
-        .y             = 65,
+        .y             = 10,
         .accelerationy = 1,
-        .imageidx      = 0,
+        .framelen      = 6,
+        .framerate     = 4,
     };
 
     TileMap tilemap = {.address   = 1000,
@@ -74,6 +72,15 @@ void game_main() {
                        .x         = 0,
                        .y         = 0};
 
+    Background bg = {
+        .x       = 0,
+        .y       = 0,
+        .address = 7000,
+        .imageh  = bg_height,
+        .imagew  = bg_width,
+    };
+
+    loadBackground(&bg);
     loadTileMap(&tilemap);
     loadSprite(&sprite);
 
@@ -82,12 +89,16 @@ void game_main() {
         unsigned char key = getKey();
 
         if (key & KEY_RIGHT) {
-            sprite.speedx   = 2;
-            sprite.imageidx = 1 - sprite.imageidx;
+            sprite.speedx = 2;
+            sprite.address = 30000;
+            sprite.framelen = 8;
         } else if (key & KEY_LEFT)
             sprite.speedx = -2;
-        else
+        else{
             sprite.speedx = 0;
+            sprite.address = 3000;
+            sprite.framelen = 6;
+        }
 
         if (key & KEY_UP)
             sprite.speedy = -5;

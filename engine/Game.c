@@ -1,5 +1,7 @@
 #include "GameEnginePriv.h"
 
+int tickCount = 0;
+
 int checkSpriteTilemapCollision(Sprite *sprite) {
     if (g_tileMap == 0)
         return 0;
@@ -58,6 +60,7 @@ void spriteMove(Sprite *sprite) {
 
 void gameTick() {
     timerTick();
+    tickCount++;
 
     // 精灵运动
     for (int i = 0; i < SPRITE_NUM; i++)

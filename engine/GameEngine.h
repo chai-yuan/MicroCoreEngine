@@ -47,7 +47,7 @@ typedef struct Sprite {
     int       address;
     ImageType type;
     int       imagew, imageh;
-    int       imageidx;
+    int       framerate, frameidx, framelen;
 } Sprite;
 
 typedef struct Background {
