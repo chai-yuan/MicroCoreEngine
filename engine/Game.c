@@ -59,7 +59,6 @@ void spriteMove(Sprite *sprite) {
 }
 
 void gameTick() {
-    timerTick();
     tickCount++;
 
     // 精灵运动

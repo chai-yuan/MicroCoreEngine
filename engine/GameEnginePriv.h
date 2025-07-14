@@ -15,7 +15,6 @@ extern struct Background *g_background[BACKGROUND_NUM];
 extern int                g_screenx, g_screeny;
 extern int                tickCount;
 
-void timerTick();
 void drawTileMap(TileMap *tileMap);
 void drawSprite(Sprite *sprite);
 void drawBackground(Background *background);

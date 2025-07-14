@@ -21,10 +21,6 @@ typedef enum ImageType {
     IMG_RGB565  = 1,
 } ImageType;
 
-typedef struct Timer {
-    int time;
-} Timer;
-
 typedef struct TileMap {
     int            x, y;
     int            mapw, maph;
@@ -83,8 +79,6 @@ void removeBackground(Background *background);
 void loadTileMap(TileMap *tileMap);
 void removeTileMap(TileMap *tileMap);
 // --- 计时器 ---
-void loadTimer(Timer *timer);
-void removeTimer(Timer *timer);
 // --- 数学函数 ---
 // --- 内存管理 ---
 
