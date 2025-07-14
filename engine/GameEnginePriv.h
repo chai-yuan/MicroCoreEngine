@@ -4,7 +4,7 @@
 #include "GameEngine.h"
 #include "PlatformPorting.h"
 
-#define IMAGES_SIZE 1024 * 64
+#define IMAGES_SIZE 1024 * 128
 #define TIMER_NUM 4
 #define BACKGROUND_NUM 4
 #define SPRITE_NUM 4
