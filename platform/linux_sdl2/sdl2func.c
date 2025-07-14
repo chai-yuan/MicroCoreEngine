@@ -106,7 +106,7 @@ void sdl_drawImagePalette(int address, int x, int y, int w, int h) {
         for (int col = 0; col < w; col += 2) {
             int index = (row * w + col) / 2;
 
-            Uint16 color16 = palette[pixel_data[index] >> 4];
+            Uint16 color16 = palette[pixel_data[index] & 0xf];
             if (color16 != 0) {
                 Uint8 r = ((color16 & 0xF800) >> 11) << 3;
                 Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
@@ -116,7 +116,7 @@ void sdl_drawImagePalette(int address, int x, int y, int w, int h) {
                 SDL_RenderDrawPoint(renderer, x + col, y + row);
             }
 
-            color16 = palette[pixel_data[index] & 0xf];
+            color16 = palette[pixel_data[index] >> 4];
             if (color16 != 0) {
                 Uint8 r = ((color16 & 0xF800) >> 11) << 3;
                 Uint8 g = ((color16 & 0x07E0) >> 5) << 2;

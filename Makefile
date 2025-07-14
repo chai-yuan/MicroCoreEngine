@@ -1,6 +1,6 @@
 PROJECT_NAME = MicroCoreEngine.elf
 
-GAME ?= test
+GAME ?= testBackground
 
 SRCS_DIR = engine
 HEADS_DIR = engine

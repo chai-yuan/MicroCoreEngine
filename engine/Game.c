@@ -60,16 +60,22 @@ void spriteMove(Sprite *sprite) {
 void gameTick() {
     timerTick();
 
+    // 精灵运动
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprite[i])
             spriteMove(g_sprite[i]);
 
-    drawTileMap(g_tileMap);
-
+    // 绘制
+    for (int i = 0; i < BACKGROUND_NUM; i++)
+        if (g_background[i])
+            drawBackground(g_background[i]);
+    if (g_tileMap)
+        drawTileMap(g_tileMap);
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprite[i])
             drawSprite(g_sprite[i]);
 
+    // 显示
     if (g_platform_api.drawScreen)
         g_platform_api.drawScreen();
 }

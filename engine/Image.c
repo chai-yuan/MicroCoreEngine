@@ -1,6 +1,6 @@
 #include "GameEnginePriv.h"
 
-void loadImage(unsigned char *image, int address, int len) {
+void loadImage(const unsigned char *image, int address, int len) {
     if (g_platform_api.loadImage)
         g_platform_api.loadImage(image, address, len);
 }

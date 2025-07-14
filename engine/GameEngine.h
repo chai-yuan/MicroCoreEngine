@@ -5,10 +5,6 @@
 #define LOGICAL_WIDTH 128
 #define LOGICAL_HEIGHT 128
 
-/**
- * @brief 定义了键盘按键代码。
- * @note 这些值是位掩码，可以组合使用。
- */
 typedef enum KeyCode {
     KEY_UP     = 1,  // 上
     KEY_DOWN   = 2,  // 下
@@ -19,6 +15,11 @@ typedef enum KeyCode {
     KEY_SELECT = 64, // Select 键
     KEY_START  = 128 // Start 键
 } KeyCode;
+
+typedef enum ImageType {
+    IMG_Palette = 0,
+    IMG_RGB565  = 1,
+} ImageType;
 
 typedef struct Timer {
     int time;
@@ -46,6 +47,13 @@ typedef struct Sprite {
     int imageidx;
 } Sprite;
 
+typedef struct Background {
+    int x, y;
+
+    int address;
+    int imagew, imageh;
+} Background;
+
 // --- 游戏逻辑 ---
 void game_main();
 void gameTick();
@@ -53,7 +61,7 @@ void setFramerate(int fps);
 // --- 屏幕操作 ---
 void screenRoll(int x, int y);
 // --- 图像操作 ---
-void loadImage(unsigned char *image, int address, int len);
+void loadImage(const unsigned char *image, int address, int len);
 void drawImage(int address, int x, int y, int w, int h);
 // --- 调色板与颜色 ---
 void loadPalette(int *palette);
@@ -62,6 +70,9 @@ unsigned char getKey();
 // --- Sprite 操作 ---
 void loadSprite(Sprite *sprite);
 void removeSprite(Sprite *sprite);
+// --- 背景操作 ---
+void loadBackground(Background *background);
+void removeBackground(Background *background);
 // --- 几何图形绘制 ---
 // --- 字符串与文本 ---
 // --- 瓦片地图 ---
