@@ -18,7 +18,4 @@ void removeBackground(Background *background) {
         }
 }
 
-void drawBackground(Background *background) {
-    drawImage(background->address, background->type, background->x, background->y, background->imagew,
-              background->imageh);
-}
+void drawBackground(Background *background) { drawImage(background->image, background->x, background->y); }

@@ -21,15 +21,19 @@ typedef enum ImageType {
     IMG_RGB565  = 1,
 } ImageType;
 
+typedef struct Image {
+    int       address;
+    ImageType type;
+    int       w, h, idx, count;
+} Image;
+
 typedef struct TileMap {
     int            x, y;
     int            mapw, maph;
     unsigned char *map;
     unsigned char *collision;
 
-    int       address;
-    ImageType type;
-    int       imagew, imageh;
+    Image *image;
 } TileMap;
 
 typedef struct Sprite {
@@ -40,18 +44,14 @@ typedef struct Sprite {
     unsigned char collision;
     int           left, right, top, bottom;
 
-    int       address;
-    ImageType type;
-    int       imagew, imageh;
-    int       framerate, frameidx, framelen;
+    Image *image;
+    int   framerate;
 } Sprite;
 
 typedef struct Background {
     int x, y;
 
-    int       address;
-    ImageType type;
-    int       imagew, imageh;
+    Image *image;
 } Background;
 
 // --- 游戏逻辑 ---
@@ -61,8 +61,8 @@ void setFramerate(int fps);
 // --- 屏幕操作 ---
 void screenRoll(int x, int y);
 // --- 图像操作 ---
-void loadImage(const unsigned char *image, int address, int len);
-void drawImage(int address, ImageType type, int x, int y, int w, int h);
+Image loadImage(const unsigned char *image, ImageType type, int imagew, int imageh, int count);
+void  drawImage(Image *image, int x, int y);
 // --- 调色板与颜色 ---
 void loadPalette(int *palette);
 // --- 输入操作 ---

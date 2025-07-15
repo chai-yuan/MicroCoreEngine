@@ -20,13 +20,9 @@ void removeSprite(Sprite *sprite) {
 
 void drawSprite(Sprite *sprite) {
     if ((sprite->framerate != 0) && ((tickCount % sprite->framerate) == 0)) {
-        sprite->frameidx++;
-        sprite->frameidx %= sprite->framelen;
+        sprite->image->idx++;
+        sprite->image->idx %= sprite->image->count;
     }
 
-
-    int imageSize = (sprite->imageh * sprite->imagew) / 2;
-    int imageAddr = sprite->address + sprite->frameidx * imageSize;
-
-    drawImage(imageAddr, sprite->type, sprite->x, sprite->y, sprite->imagew, sprite->imageh);
+    drawImage(sprite->image, sprite->x, sprite->y);
 }

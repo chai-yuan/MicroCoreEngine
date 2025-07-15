@@ -14,7 +14,7 @@ int           palette[16] = {0x0,    0xef18, 0xb9c9, 0x7db6, 0x49ea, 0x6d2d, 0x2
 
 SDL_Window   *window     = NULL;
 SDL_Renderer *renderer   = NULL;
-int           g_waittime = 0;
+Uint32        g_waittime = 0;
 
 int sdl_init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -90,43 +90,13 @@ unsigned char sdl_getkey() {
 }
 
 void sdl_loadImage(const unsigned char *image, int address, int len) {
-    for (int i = 0; i < len; i++)
-        images[address + i] = image[i];
-}
-
-void sdl_drawImagePalette(int address, int x, int y, int w, int h) {
-    if (address + w * h > IMAGES_SIZE) {
-        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h);
+    if (address + len > IMAGES_SIZE){
+        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, len);
         return;
     }
 
-    Uint8 *pixel_data = (Uint8 *)(images + address);
-
-    for (int row = 0; row < h; row++) {
-        for (int col = 0; col < w; col += 2) {
-            int index = (row * w + col) / 2;
-
-            Uint16 color16 = palette[pixel_data[index] & 0xf];
-            if (color16 != 0) {
-                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
-                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
-                Uint8 b = (color16 & 0x001F) << 3;
-
-                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-                SDL_RenderDrawPoint(renderer, x + col, y + row);
-            }
-
-            color16 = palette[pixel_data[index] >> 4];
-            if (color16 != 0) {
-                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
-                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
-                Uint8 b = (color16 & 0x001F) << 3;
-
-                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-                SDL_RenderDrawPoint(renderer, x + col + 1, y + row);
-            }
-        }
-    }
+    for (int i = 0; i < len; i++)
+        images[address + i] = image[i];
 }
 
 void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
@@ -153,6 +123,40 @@ void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
 
             SDL_SetRenderDrawColor(renderer, r, g, b, 255);
             SDL_RenderDrawPoint(renderer, x + col, y + row);
+        }
+    }
+}
+
+void sdl_drawImage(Image *image, int x, int y) {
+    if (image->type == IMG_RGB565)
+        return;
+
+    Uint32 size       = (image->w * image->h) / 2;
+    Uint8 *pixel_data = (Uint8 *)(images + image->address + image->idx * size);
+
+    for (int row = 0; row < image->h; row++) {
+        for (int col = 0; col < image->w; col += 2) {
+            int index = (row * image->w + col) / 2;
+
+            Uint16 color16 = palette[pixel_data[index] & 0xf];
+            if (color16 != 0) {
+                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+                Uint8 b = (color16 & 0x001F) << 3;
+
+                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+                SDL_RenderDrawPoint(renderer, x + col, y + row);
+            }
+
+            color16 = palette[pixel_data[index] >> 4];
+            if (color16 != 0) {
+                Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+                Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+                Uint8 b = (color16 & 0x001F) << 3;
+
+                SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+                SDL_RenderDrawPoint(renderer, x + col + 1, y + row);
+            }
         }
     }
 }

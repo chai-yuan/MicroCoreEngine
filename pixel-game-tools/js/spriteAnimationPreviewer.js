@@ -26,29 +26,35 @@ const spriteAnimationPreviewer = {
                 <h2>${this.name}</h2>
                 <p>上传一张包含连续帧的精灵图（spritesheet），然后设置单个精灵的尺寸以预览动画。</p>
 
-                <div class="controls" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-                    <div>
-                        <label for="sprite-file-input">上传精灵图: </label>
-                        <input type="file" id="sprite-file-input" accept="image/*">
-                    </div>
-                    <div>
-                        <label for="sprite-width-input">精灵宽度 (px): </label>
-                        <input type="number" id="sprite-width-input" value="32" min="1">
-                    </div>
-                    <div>
-                        <label for="sprite-height-input">精灵高度 (px): </label>
-                        <input type="number" id="sprite-height-input" value="32" min="1">
-                    </div>
-                    <div>
-                        <label for="sprite-fps-input">动画帧率 (FPS): </label>
-                        <input type="number" id="sprite-fps-input" value="10" min="1">
+                <div class="tool-section">
+                    <h3>1. 上传并配置精灵</h3>
+                    <div class="config-grid">
+                        <div>
+                            <label for="sprite-file-input">精灵图文件:</label>
+                            <input type="file" id="sprite-file-input" accept="image/*">
+                        </div>
+                        <div>
+                            <label for="sprite-width-input">精灵尺寸 (W x H):</label>
+                            <!-- 将宽度和高度输入框组合在一起，以保持风格统一 -->
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" id="sprite-width-input" value="32" min="1" style="width: 70px;">
+                                <input type="number" id="sprite-height-input" value="32" min="1" style="width: 70px;">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="sprite-fps-input">动画帧率 (FPS):</label>
+                            <input type="number" id="sprite-fps-input" value="10" min="1" style="width: 70px;">
+                        </div>
                     </div>
                 </div>
 
-                <div class="preview-area">
-                    <h3>预览</h3>
-                    <canvas id="sprite-preview-canvas" style="border: 1px solid #ccc; background-color: #f0f0f0; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"></canvas>
-                    <p id="sprite-status-message" style="color: #666; font-size: 14px; min-height: 20px;">请上传一张精灵图。</p>
+                <div class="tool-section">
+                    <h3>2. 动画预览</h3>
+                    <!-- 使用与参考代码一致的预览区容器和样式 -->
+                    <div style="margin-top: 15px; max-width: 100%; overflow: auto;">
+                        <canvas id="sprite-preview-canvas" style="display: block; border: 1px solid #7f8c8d; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;"></canvas>
+                    </div>
+                    <p id="sprite-status-message" style="margin-top: 10px;">请上传一张精灵图并进行配置。</p>
                 </div>
             </div>
         `;

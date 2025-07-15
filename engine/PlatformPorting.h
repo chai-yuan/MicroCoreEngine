@@ -1,6 +1,8 @@
 #ifndef PLATFORM_PORTING_H
 #define PLATFORM_PORTING_H
 
+#include "GameEngine.h"
+
 /**
  * @brief 平台功能接口结构体
  *
@@ -14,6 +16,7 @@ typedef struct {
     void (*setFramerate)(int fps);
     void (*loadPalette)(int *palette);
     void (*loadImage)(const unsigned char *image, int addr, int len);
+    void (*drawImage)(Image *image, int x, int y);
     void (*drawImagePalette)(int addr, int x, int y, int w, int h);
     void (*drawImageRGB565)(int addr, int x, int y, int w, int h);
 } platform_api_t;

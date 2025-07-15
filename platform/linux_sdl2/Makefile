@@ -2,7 +2,8 @@ SRCS += $(wildcard $(PLATFORM_DIR)/*.c)
 OBJS = $(patsubst %.c, build/%.o, $(SRCS))
 
 CC = gcc
-CFLAGS = -std=c99 -O2 -I$(HEADS_DIR)
+CFLAGS = -Wall -Wextra -std=c99 -O2 -I$(HEADS_DIR)
+CFLAGS += -fsanitize=address -g
 CFLAGS += `sdl2-config --cflags`
 LDFLAGS = `sdl2-config --libs`
 

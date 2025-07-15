@@ -10,21 +10,19 @@ unsigned char sdl_getkey();
 void          sdl_setfps(int fps);
 void          sdl_cleanup();
 void          sdl_loadImage(const unsigned char *image, int address, int len);
-void          sdl_drawImagePalette(int address, int x, int y, int w, int h);
-void          sdl_drawImage16bit(int address, int x, int y, int w, int h);
+void          sdl_drawImage(Image *image, int x, int y);
 void          sdl_loadPalette(int *p);
 
 int main() {
     sdl_init();
     platform_api_t api = {
-        .drawScreen       = sdl_drawscreen,
-        .getTime          = sdl_gettimer,
-        .getKey           = sdl_getkey,
-        .setFramerate     = sdl_setfps,
-        .loadImage        = sdl_loadImage,
-        .loadPalette      = sdl_loadPalette,
-        .drawImagePalette = sdl_drawImagePalette,
-        .drawImageRGB565  = sdl_drawImage16bit,
+        .drawScreen   = sdl_drawscreen,
+        .getTime      = sdl_gettimer,
+        .getKey       = sdl_getkey,
+        .setFramerate = sdl_setfps,
+        .loadImage    = sdl_loadImage,
+        .loadPalette  = sdl_loadPalette,
+        .drawImage    = sdl_drawImage,
     };
     platform_register_api(api);
 
