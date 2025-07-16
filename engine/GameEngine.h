@@ -28,7 +28,6 @@ typedef struct Image {
 } Image;
 
 typedef struct TileMap {
-    int            x, y;
     int            mapw, maph;
     unsigned char *map;
     unsigned char *collision;
@@ -45,7 +44,7 @@ typedef struct Sprite {
     int           left, right, top, bottom;
 
     Image *image;
-    int   framerate;
+    int    framerate;
 } Sprite;
 
 typedef struct Background {

@@ -43,18 +43,18 @@ void game_main() {
 
     Sprite sprite = {
         .image         = &person_idle,
-        .left          = 5,
-        .right         = person_width - 10,
-        .top           = 0,
+        .left          = 10,
+        .right         = 25,
+        .top           = 4,
         .bottom        = 32,
         .collision     = 3,
         .x             = 50,
         .y             = 10,
-        .accelerationy = 0,
+        .accelerationy = 1,
         .framerate     = 4,
     };
 
-    TileMap tilemap = {.image = &map, .mapw = 20, .maph = 8, .map = level0, .collision = level0, .x = 0, .y = 0};
+    TileMap tilemap = {.image = &map, .mapw = 20, .maph = 8, .map = level0, .collision = level0};
 
     Background bg = {
         .x     = 0,

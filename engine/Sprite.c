@@ -19,7 +19,7 @@ void removeSprite(Sprite *sprite) {
 }
 
 void drawSprite(Sprite *sprite) {
-    if ((sprite->framerate != 0) && ((tickCount % sprite->framerate) == 0)) {
+    if ((sprite->framerate != 0) && ((g_tickCount % sprite->framerate) == 0)) {
         sprite->image->idx++;
         sprite->image->idx %= sprite->image->count;
     }

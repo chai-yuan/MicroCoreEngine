@@ -10,10 +10,10 @@ void removeTileMap(TileMap *tileMap) {
 }
 
 void drawTileMap(TileMap *tileMap) {
-    int x = tileMap->x, y = tileMap->y;
+    int x = 0, y = 0;
 
     for (int idx0 = 0; idx0 < tileMap->maph; idx0++) {
-        x = tileMap->x;
+        x = 0;
         for (int idx1 = 0; idx1 < tileMap->mapw; idx1++) {
 
             int tile = tileMap->map[idx0 * tileMap->mapw + idx1];

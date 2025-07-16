@@ -13,7 +13,7 @@ extern struct TileMap    *g_tileMap;
 extern struct Sprite     *g_sprite[SPRITE_NUM];
 extern struct Background *g_background[BACKGROUND_NUM];
 extern int                g_screenx, g_screeny;
-extern int                tickCount;
+extern int                g_tickCount;
 
 void drawTileMap(TileMap *tileMap);
 void drawSprite(Sprite *sprite);
