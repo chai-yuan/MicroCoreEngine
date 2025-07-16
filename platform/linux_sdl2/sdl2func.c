@@ -90,7 +90,7 @@ unsigned char sdl_getkey() {
 }
 
 void sdl_loadImage(const unsigned char *image, int address, int len) {
-    if (address + len > IMAGES_SIZE){
+    if (address + len > IMAGES_SIZE) {
         SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, len);
         return;
     }
@@ -99,17 +99,13 @@ void sdl_loadImage(const unsigned char *image, int address, int len) {
         images[address + i] = image[i];
 }
 
-void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
-    if (address + w * h * 2 > IMAGES_SIZE) {
-        SDL_Log("Error: Image data out of bounds. Address: %d, Size: %d", address, w * h * 2);
-        return;
-    }
+void sdl_drawImage16bit(Image *image, int x, int y) {
+    Uint32  size       = (image->w * image->h) * 2;
+    Uint16 *pixel_data = (Uint16 *)(images + image->address + image->idx * size);
 
-    Uint16 *pixel_data = (Uint16 *)(images + address);
-
-    for (int row = 0; row < h; ++row) {
-        for (int col = 0; col < w; ++col) {
-            int index = row * w + col;
+    for (int row = 0; row < image->h; ++row) {
+        for (int col = 0; col < image->w; ++col) {
+            int index = row * image->w + col;
 
             Uint16 color16 = pixel_data[index];
 
@@ -127,10 +123,7 @@ void sdl_drawImage16bit(int address, int x, int y, int w, int h) {
     }
 }
 
-void sdl_drawImage(Image *image, int x, int y) {
-    if (image->type == IMG_RGB565)
-        return;
-
+void sdl_drawPalette(Image *image, int x, int y) {
     Uint32 size       = (image->w * image->h) / 2;
     Uint8 *pixel_data = (Uint8 *)(images + image->address + image->idx * size);
 
@@ -159,4 +152,11 @@ void sdl_drawImage(Image *image, int x, int y) {
             }
         }
     }
+}
+
+void sdl_drawImage(Image *image, int x, int y) {
+    if (image->type == IMG_RGB565)
+        sdl_drawImage16bit(image, x, y);
+    else if (image->type == IMG_Palette)
+        sdl_drawPalette(image, x, y);
 }

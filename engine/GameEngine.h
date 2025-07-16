@@ -2,8 +2,8 @@
 #define GAME_ENGINE_H
 
 // 游戏的逻辑分辨率
-#define LOGICAL_WIDTH 128
-#define LOGICAL_HEIGHT 128
+#define LOGICAL_WIDTH 320
+#define LOGICAL_HEIGHT 240
 
 typedef enum KeyCode {
     KEY_UP     = 1,  // 上
