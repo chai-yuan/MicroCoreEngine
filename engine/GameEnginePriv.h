@@ -17,5 +17,11 @@ typedef struct TileMap {
     uint8_t         *tiles;
     int              tilesw, tilesh;
 } TileMap;
+typedef struct Sprite {
+    ImageHandle          image;
+    ImageFlip            flip;
+    int                  x, y;
+    SpriteUpdateFunction updatefunc;
+} Sprite;
 
 #endif

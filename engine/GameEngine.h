@@ -50,4 +50,16 @@ void             tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int
 int              tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley);
 void             tilemap_drawAtPoint(TileMapHandle m, int x, int y, ImageDrawMode mode);
 
+SpriteHandle sprite_newSprite(void);
+void         sprite_freeSprite(SpriteHandle sprite);
+void         sprite_addSprite(SpriteHandle sprite);
+void         sprite_removeSprite(SpriteHandle sprite);
+void         sprite_updateAndDrawSprites(void);
+void         sprite_moveTo(SpriteHandle sprite, int x, int y);
+void         sprite_getPosition(SpriteHandle sprite, int *x, int *y);
+void         sprite_setImage(SpriteHandle sprite, ImageHandle image, ImageFlip flip);
+void         sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
+void         sprite_setVisible(SpriteHandle sprite, int flag);
+void         sprite_setUpdateFunction(SpriteHandle sprite, SpriteUpdateFunction func);
+
 #endif // RETRO_ENGINE_H
