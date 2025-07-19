@@ -1,6 +1,8 @@
 #ifndef PLATFORM_SDL2_H
 #define PLATFORM_SDL2_H
 
+#include "PlatformPorting.h"
+
 // 定义一个函数指针类型，用于指向游戏的主循环函数
 typedef void (*game_loop_func_t)(void);
 
@@ -12,7 +14,7 @@ typedef void (*game_loop_func_t)(void);
  * @param target_fps 目标帧率。
  * @return 成功返回0，失败返回-1。
  */
-int platform_sdl2_init(const char* title, int width, int height, int target_fps);
+platform_api_t platform_sdl2_init(const char *title, int width, int height, int target_fps);
 
 /**
  * @brief 运行主事件循环。
