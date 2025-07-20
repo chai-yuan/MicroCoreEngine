@@ -7,7 +7,6 @@ void graphics_display(void) {
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i]) {
             Rect r = {g_sprites[i]->x, g_sprites[i]->y, g_sprites[i]->collisionRect.w, g_sprites[i]->collisionRect.h};
-
             graphics_drawRect(r, (Color){100, 255, 0, 255});
         }
 

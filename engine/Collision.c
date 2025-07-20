@@ -10,13 +10,13 @@ static inline int checkSpriteTilemapCollision(const SpriteHandle s, const TileMa
     int hitbox_y1 = s->y + s->collisionRect.h;
 
     // 计算碰撞盒覆盖的瓦片网格范围
-    int startCol = hitbox_x / tileSizeW;
+    int startCol = max(hitbox_x / tileSizeW, 0);
     int endCol   = (hitbox_x1 - 1) / tileSizeW;
-    int startRow = hitbox_y / tileSizeH;
+    int startRow = max(hitbox_y / tileSizeH, 0);
     int endRow   = (hitbox_y1 - 1) / tileSizeH;
 
-    for (int row = startRow; row <= endRow; ++row) {
-        for (int col = startCol; col <= endCol; ++col) {
+    for (int row = startRow; (row <= endRow) && (row < t->tilesh); ++row) {
+        for (int col = startCol; (col <= endCol) && (col < t->tilesw); ++col) {
             // 获取瓦片在一维数组中的索引
             int tileIndex = row * t->tilesw + col;
             if (t->tiles[tileIndex]) {

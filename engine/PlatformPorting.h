@@ -26,7 +26,7 @@ typedef struct {
 
     void (*gfx_set_render_target)(platform_image_t image); // 设置渲染目标，传入NULL则渲染到主屏幕
     void (*gfx_set_clip_rect)(Rect rect);                  // 限制渲染区域
-    void (*gfx_set_draw_mode)(ImageDrawMode mode);         // 设置渲染模式
+    // void (*gfx_set_draw_mode)(ImageDrawMode mode);         // 设置渲染模式
     // --- 绘图操作 ---
 
     void (*gfx_clear)(Color color); // 清除屏幕，设置背景颜色

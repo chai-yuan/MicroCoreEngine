@@ -1,9 +1,9 @@
 #ifndef GAME_ENGINE_PIRV
 #define GAME_ENGINE_PIRV
 
+#include "Debug.h"
 #include "GameEngine.h"
 #include "PlatformPorting.h"
-#include "Debug.h"
 
 typedef struct Image {
     platform_image_t ptr;
@@ -32,5 +32,7 @@ typedef struct Sprite {
 extern SpriteHandle g_sprites[SPRITE_NUM];
 #define TILEMAP_NUM 4
 extern TileMapHandle g_tilemaps[TILEMAP_NUM];
+
+static inline int max(int a, int b) { return a > b ? a : b; }
 
 #endif
