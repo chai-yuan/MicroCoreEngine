@@ -122,7 +122,7 @@ static void _sdl_gfx_draw_line(Point p1, Point p2, int width, Color color) {
 static void _sdl_gfx_draw_rect(Rect rect, Color color) {
     SDL_Rect sdl_rect = {rect.x, rect.y, rect.w, rect.h};
     SDL_SetRenderDrawColor(g_renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderFillRect(g_renderer, &sdl_rect);
+    SDL_RenderDrawRect(g_renderer, &sdl_rect);
 }
 
 // 显示信息

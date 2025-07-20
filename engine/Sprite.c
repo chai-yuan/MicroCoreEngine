@@ -1,12 +1,12 @@
 #include "GameEnginePriv.h"
 
-#define SPRITE_NUM 8
 SpriteHandle g_sprites[SPRITE_NUM] = {NULL};
 
 SpriteHandle sprite_newSprite(void) {
-    SpriteHandle sprite = platform.mem_alloc(sizeof(Sprite));
-    sprite->image       = NULL;
-    sprite->updatefunc  = NULL;
+    SpriteHandle sprite   = platform.mem_alloc(sizeof(Sprite));
+    sprite->image         = NULL;
+    sprite->updatefunc    = NULL;
+    sprite->collisionfunc = NULL;
     return sprite;
 }
 
@@ -44,6 +44,10 @@ void sprite_updateAndDrawSprites(void) {
         }
 }
 
+void sprite_setImageFlip(SpriteHandle sprite, ImageFlip flip) { sprite->flip = flip; }
+
+ImageFlip sprite_getImageFlip(SpriteHandle sprite) { return sprite->flip; }
+
 void sprite_moveTo(SpriteHandle sprite, int x, int y) {
     sprite->x = x;
     sprite->y = y;
@@ -64,3 +68,15 @@ void sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
 void sprite_setVisible(SpriteHandle sprite, int flag);
 
 void sprite_setUpdateFunction(SpriteHandle sprite, SpriteUpdateFunction func) { sprite->updatefunc = func; }
+
+void sprite_setCollideRect(SpriteHandle sprite, Rect collideRect) { sprite->collisionRect = collideRect; }
+
+Rect sprite_getCollideRect(SpriteHandle sprite) { return sprite->collisionRect; }
+
+uint32_t sprite_getCollideMask(SpriteHandle sprite) { return sprite->mask; }
+
+void sprite_setCollideMask(SpriteHandle sprite, uint32_t mask) { sprite->mask = mask; }
+
+void sprite_setCollisionResponseFunction(SpriteHandle sprite, SpriteCollisionFunction func) {
+    sprite->collisionfunc = func;
+}

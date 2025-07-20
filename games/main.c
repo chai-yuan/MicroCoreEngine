@@ -15,6 +15,13 @@ char mapData[10][10] = {{0, 0, 0, 6, 6, 6, 0, 0, 0, 0}, {0, 0, 0, 6, 6, 6, 0, 0,
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 3, 0, 0, 0}, {2, 2, 2, 2, 2, 2, 2, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
+    if (info.normal.x != 0)
+        *info.dx = 0;
+    if (info.normal.y != 0)
+        *info.dy = 0;
+}
+
 void game_init(void) {
     g_test_image   = graphics_loadImageTable(12, 16, 16, tiles_data);
     g_sprite_image = graphics_loadImageTable(6, 40, 32, my_sprite_data);
@@ -22,28 +29,35 @@ void game_init(void) {
     g_sprite       = sprite_newSprite();
     tilemap_setImageTable(g_tilemap, g_test_image);
     tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 10, 10);
+    tilemap_addTilemap(g_tilemap);
 
     sprite_setImage(g_sprite, graphics_getTableImage(g_sprite_image, 0), imageUnflipped);
+    sprite_setCollideRect(g_sprite, (Rect){0, 0, 40, 32});
+    sprite_setCollisionResponseFunction(g_sprite, sprite_collidefunc);
     sprite_addSprite(g_sprite);
+    sprite_moveTo(g_sprite, 0, 0);
     INFO("Game initialized!\n");
 }
 
 void game_loop(void) {
     // --- 输入处理 ---
     unsigned int buttons = system_getButtonState();
-    if (buttons & buttonLeft)
-        g_x -= 4;
-    if (buttons & buttonRight)
-        g_x += 4;
+    if (buttons & buttonLeft) {
+        sprite_moveWithCollisions(g_sprite, -4, 0);
+        sprite_setImageFlip(g_sprite, imageFlippedX);
+    }
+    if (buttons & buttonRight) {
+        sprite_moveWithCollisions(g_sprite, 4, 0);
+        sprite_setImageFlip(g_sprite, imageUnflipped);
+    }
     if (buttons & buttonUp)
-        g_y -= 4;
+        sprite_moveWithCollisions(g_sprite, 0, -4);
     if (buttons & buttonDown)
-        g_y += 4;
+        sprite_moveWithCollisions(g_sprite, 0, 4);
 
     // --- 渲染 ---
-    graphics_clear((Color){50, 50, 50, 255});
-    tilemap_drawAtPoint(g_tilemap, 32, 0, 0);
-    sprite_moveTo(g_sprite, g_x, g_y);
+    graphics_clear((Color){0, 0, 0, 255});
+    tilemap_drawAtPoint(g_tilemap, 0, 0, 0);
     sprite_updateAndDrawSprites();
     graphics_display();
 }

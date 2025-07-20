@@ -49,6 +49,8 @@ void             tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles, int til
 void             tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int tiley, uint8_t idx);
 int              tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley);
 void             tilemap_drawAtPoint(TileMapHandle m, int x, int y, ImageDrawMode mode);
+void             tilemap_addTilemap(TileMapHandle tilemap);
+void             tilemap_removeTilemap(TileMapHandle tilemap);
 
 SpriteHandle sprite_newSprite(void);
 void         sprite_freeSprite(SpriteHandle sprite);
@@ -60,6 +62,14 @@ void         sprite_getPosition(SpriteHandle sprite, int *x, int *y);
 void         sprite_setImage(SpriteHandle sprite, ImageHandle image, ImageFlip flip);
 void         sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
 void         sprite_setVisible(SpriteHandle sprite, int flag);
+void         sprite_setImageFlip(SpriteHandle sprite, ImageFlip flip);
+ImageFlip    sprite_getImageFlip(SpriteHandle sprite);
 void         sprite_setUpdateFunction(SpriteHandle sprite, SpriteUpdateFunction func);
+void         sprite_setCollideRect(SpriteHandle sprite, Rect collideRect);
+Rect         sprite_getCollideRect(SpriteHandle sprite);
+uint32_t     sprite_getCollideMask(SpriteHandle sprite);
+void         sprite_setCollideMask(SpriteHandle sprite, uint32_t mask);
+void         sprite_setCollisionResponseFunction(SpriteHandle sprite, SpriteCollisionFunction func);
+void         sprite_moveWithCollisions(SpriteHandle s, int dx, int dy);
 
 #endif // RETRO_ENGINE_H

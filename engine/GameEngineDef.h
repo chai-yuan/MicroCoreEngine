@@ -14,6 +14,13 @@ typedef struct {
 typedef struct {
     int x, y;
 } Point;
+typedef struct {
+    int x, y;
+} Vector;
+typedef struct {
+    int   *dx, *dy;
+    Vector normal;
+} CollisionInfo;
 typedef enum { pixelRGBA4444 } PixelFormat;
 typedef enum { drawNormal, drawAlpha, drawAdd, drawMultiply } ImageDrawMode;
 typedef enum { imageUnflipped, imageFlippedX, imageFlippedY, imageFlippedXY } ImageFlip;
@@ -24,5 +31,6 @@ typedef struct TileMap    *TileMapHandle;
 typedef struct Sprite     *SpriteHandle;
 
 typedef void (*SpriteUpdateFunction)(void);
+typedef void (*SpriteCollisionFunction)(SpriteHandle self, SpriteHandle other, CollisionInfo info);
 
 #endif

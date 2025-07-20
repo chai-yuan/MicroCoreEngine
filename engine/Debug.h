@@ -1,7 +1,11 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#define ENABLE_DEBUG_MACROS 1
+// 调试日志
+#define ENABLE_DEBUG_LOG 1
+// 调试碰撞
+#define ENABLE_DEBUG_COL 1
+
 #define DEBUG_LEVEL DEBUG_LEVEL_INFO
 
 // 定义调试级别
@@ -16,7 +20,7 @@ typedef enum {
 #define DEBUG_LEVEL DEBUG_LEVEL_INFO // 默认调试级别为 INFO
 #endif
 
-#ifdef ENABLE_DEBUG_MACROS
+#ifdef ENABLE_DEBUG_LOG
 
 #include <stdarg.h>
 #include <stdio.h>
