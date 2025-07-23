@@ -1,5 +1,4 @@
-#include "GameEngine.h"
-#include "PlatformPorting.h"
+#include "GameEnginePriv.h"
 
 void        *system_malloc(size_t size) { return platform.mem_alloc(size); }
 void         system_free(void *ptr) { platform.mem_free(ptr); }

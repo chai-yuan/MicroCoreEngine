@@ -3,9 +3,6 @@
 
 #include "GameEngineDef.h"
 
-void game_init(void);
-void game_loop(void);
-
 void        *system_malloc(size_t size);
 void         system_free(void *ptr);
 void         system_setFPS(int fps);

@@ -4,6 +4,10 @@
 #include "Debug.h"
 #include "GameEngine.h"
 #include "PlatformPorting.h"
+#include "MinimalPorting.h"
+
+extern platform_api_t platform;
+extern minimal_api_t mini_platform;
 
 typedef struct Image {
     platform_image_t ptr;

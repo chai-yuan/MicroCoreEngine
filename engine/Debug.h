@@ -4,7 +4,7 @@
 // 调试日志
 #define ENABLE_DEBUG_LOG 1
 // 调试碰撞
-#define ENABLE_DEBUG_COL 1
+// #define ENABLE_DEBUG_COL 1
 
 #define DEBUG_LEVEL DEBUG_LEVEL_INFO
 

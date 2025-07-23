@@ -1,4 +1,5 @@
 #include "MinimalPorting.h"
+#include "Debug.h"
 #include "PlatformPorting.h"
 
 minimal_api_t mini_platform;
@@ -121,12 +122,16 @@ static void wrapper_gfx_clear(Color color) {
         clear_rect.w = DISPLAY_WIDTH;
         clear_rect.h = DISPLAY_HEIGHT;
     }
-    wrapper_gfx_draw_rect(clear_rect, color);
+
+    unsigned char bk_color[2] = {0};
+    for (int i = 0; i < DISPLAY_HEIGHT; i++) {
+        for (int i2 = 0; i2 < DISPLAY_WIDTH; i2++) {
+            mini_platform.draw(bk_color, i2, i, 1, 1, imageUnflipped);
+        }
+    }
 }
 
-static void wrapper_gfx_present(void) {
-    // No-op
-}
+static void wrapper_gfx_present(void) { mini_platform.present(); }
 
 static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect, int x, int y, ImageFlip flip) {
     InternalImage *img = (InternalImage *)image;
@@ -143,69 +148,10 @@ static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect,
         r.h = img->height;
     }
 
-    if (flip == imageUnflipped && !current_render_target) {
-        mini_platform.draw(img->pixels + r.y * img->width + r.x, x, y, r.w, r.h);
-        return;
-    }
-
-    /*for (int sy = 0; sy < r.h; ++sy) {*/
-    /*    for (int sx = 0; sx < r.w; ++sx) {*/
-    /*        int dest_x = x + sx;*/
-    /*        int dest_y = y + sy;*/
-    /**/
-    /*        // Check against clip rect*/
-    /*        if (dest_x < current_clip_rect.x || dest_x >= current_clip_rect.x + current_clip_rect.w ||*/
-    /*            dest_y < current_clip_rect.y || dest_y >= current_clip_rect.y + current_clip_rect.h) {*/
-    /*            continue;*/
-    /*        }*/
-    /**/
-    /*        int read_sx = (flip & imageFlippedX) ? (r.w - 1 - sx) : sx;*/
-    /*        int read_sy = (flip & imageFlippedY) ? (r.h - 1 - sy) : sy;*/
-    /**/
-    /*        Color c = img->pixels[(r.y + read_sy) * img->width + (r.x + read_sx)];*/
-    /**/
-    /*        if (current_render_target) {*/
-    /*            current_render_target->pixels[dest_y * current_render_target->width + dest_x] = c;*/
-    /*        } else {*/
-    /*            // Drawing 1x1 pixel using the minimal API's draw function is inefficient*/
-    /*            // but fulfills the contract.*/
-    /*            mini_platform.draw(&c, dest_x, dest_y, 1, 1);*/
-    /*        }*/
-    /*    }*/
-    /*}*/
+    mini_platform.draw(img->pixels + (r.y * img->width + r.x) * 2, x, y, r.w, r.h, flip);
 }
 
-static void wrapper_gfx_draw_rect(Rect rect, Color color) {
-    /*// For simplicity, we create a temporary buffer for one row and draw it repeatedly.*/
-    /*// A more advanced version might allocate the whole rectangle if memory allows.*/
-    /*uint8_t *row_buffer = (uint8_t *)wrapper_mem_alloc(rect.w);*/
-    /*if (!row_buffer)*/
-    /*    return; // Not enough memory for even one row*/
-    /**/
-    /*memset(row_buffer, color, rect.w);*/
-    /**/
-    /*for (int i = 0; i < rect.h; ++i) {*/
-    /*    int y = rect.y + i;*/
-    /*    // Clipping is implicitly handled by the draw call for the screen,*/
-    /*    // but needs to be manual for render targets.*/
-    /*    if (current_render_target) {*/
-    /*        // Manual clipping for render target*/
-    /*        if (y >= 0 && y < current_render_target->height) {*/
-    /*            int x_start = rect.x < 0 ? 0 : rect.x;*/
-    /*            int len     = rect.w;*/
-    /*            if (x_start + len > current_render_target->width) {*/
-    /*                len = current_render_target->width - x_start;*/
-    /*            }*/
-    /*            if (len > 0) {*/
-    /*                memcpy(current_render_target->pixels + y * current_render_target->width + x_start, row_buffer,
-     * len);*/
-    /*            }*/
-    /*        }*/
-    /*    } else {*/
-    /*        mini_platform.draw(row_buffer, rect.x, y, rect.w, 1);*/
-    /*    }*/
-    /*}*/
-}
+static void wrapper_gfx_draw_rect(Rect rect, Color color) { WARN("wrapper_gfx_draw_rect not implemented"); }
 
 static int wrapper_display_get_width(void) { return DISPLAY_WIDTH; }
 
