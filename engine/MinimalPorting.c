@@ -4,7 +4,8 @@
 
 minimal_api_t mini_platform;
 
-static uint8_t *vmem_next_free = NULL;
+static uint8_t *vmem_next_free                 = NULL;
+static uint16_t (*vmem_display)[DISPLAY_WIDTH] = NULL;
 
 typedef struct {
     int      width;
@@ -29,10 +30,18 @@ static void wrapper_gfx_draw_rect(Rect rect, Color color);
 static int  wrapper_display_get_width(void);
 static int  wrapper_display_get_height(void);
 
+static inline uint16_t color2RGB565(Color c) {
+    if (c.a < 128) {
+        return 0;
+    }
+    return ((c.r >> 3) << 11) | ((c.g >> 2) << 5) | (c.b >> 3);
+}
+
 void minimal_register_api(const minimal_api_t api) {
     mini_platform = api;
 
-    vmem_next_free = mini_platform.vmem;
+    vmem_display   = (uint16_t(*)[DISPLAY_WIDTH])mini_platform.vmem;
+    vmem_next_free = mini_platform.vmem + DISPLAY_WIDTH * DISPLAY_HEIGHT * 2;
 
     current_clip_rect.x = 0;
     current_clip_rect.y = 0;
@@ -69,7 +78,8 @@ void minimal_register_api(const minimal_api_t api) {
 static void *wrapper_mem_alloc(size_t size) {
     size = (size + 3) & ~3;
     if (vmem_next_free + size > mini_platform.vmem + VMEM_SIZE) {
-        return NULL; // Out of memory
+        WARN("Out of memory!");
+        return NULL;
     }
     void *ptr = vmem_next_free;
     vmem_next_free += size;
@@ -114,19 +124,10 @@ static void wrapper_gfx_set_render_target(platform_image_t image) { current_rend
 static void wrapper_gfx_set_clip_rect(Rect rect) { current_clip_rect = rect; }
 
 static void wrapper_gfx_clear(Color color) {
-    Rect clear_rect = {0, 0, 0, 0};
-    if (current_render_target) {
-        clear_rect.w = current_render_target->width;
-        clear_rect.h = current_render_target->height;
-    } else {
-        clear_rect.w = DISPLAY_WIDTH;
-        clear_rect.h = DISPLAY_HEIGHT;
-    }
-
-    unsigned char bk_color[2] = {0};
+    uint16_t bk_color = color2RGB565(color);
     for (int i = 0; i < DISPLAY_HEIGHT; i++) {
         for (int i2 = 0; i2 < DISPLAY_WIDTH; i2++) {
-            mini_platform.draw(bk_color, i2, i, 1, 1, imageUnflipped);
+            vmem_display[i][i2] = bk_color;
         }
     }
 }
@@ -134,9 +135,7 @@ static void wrapper_gfx_clear(Color color) {
 static void wrapper_gfx_present(void) { mini_platform.present(); }
 
 static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect, int x, int y, ImageFlip flip) {
-    InternalImage *img = (InternalImage *)image;
-    if (!img)
-        return;
+    InternalImage *img   = (InternalImage *)image;
 
     Rect r;
     if (src_rect) {
@@ -148,7 +147,14 @@ static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect,
         r.h = img->height;
     }
 
-    mini_platform.draw(img->pixels + (r.y * img->width + r.x) * 2, x, y, r.w, r.h, flip);
+    uint16_t *pixel = (uint16_t *)(img->pixels + (r.y * img->width + r.x));
+
+    for (int h = y; h < y + r.h; h++)
+        for (int w = x; w < x + r.w; w++) {
+            if ((w >= 0) && (w < DISPLAY_WIDTH) && (h >= 0) && (h < DISPLAY_HEIGHT))
+                vmem_display[h][w] = *pixel;
+            pixel++;
+        }
 }
 
 static void wrapper_gfx_draw_rect(Rect rect, Color color) { WARN("wrapper_gfx_draw_rect not implemented"); }

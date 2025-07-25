@@ -62,8 +62,9 @@ void tilemap_drawAtPoint(TileMapHandle m, int x, int y, ImageDrawMode mode) {
         for (int c = 0; c < m->tilesw; c++) {
             int idx = m->tiles[c + r * m->tilesh];
 
-            if (idx)
+            if (idx) {
                 graphics_drawImageTable(m->table, drawx, drawy, idx - 1, imageUnflipped);
+            }
 
             drawx += m->table->w;
         }

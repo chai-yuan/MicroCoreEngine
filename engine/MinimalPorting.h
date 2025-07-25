@@ -11,7 +11,6 @@ typedef struct {
     uint8_t *vmem;
     unsigned int (*get_ticks_ms)(void);
     unsigned int (*get_button_state)(void);
-    void (*draw)(uint8_t *data, int x, int y, int w, int h, ImageFlip flip);
     void (*present)(void);
 } minimal_api_t;
 

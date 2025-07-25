@@ -12,6 +12,7 @@
 SDL_Window   *window              = NULL;
 SDL_Renderer *renderer            = NULL;
 int           g_target_frame_time = 0;
+uint8_t       vmem[VMEM_SIZE];
 
 int sdl_init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -49,29 +50,26 @@ static unsigned int _sdl_get_button_state() {
     return state;
 }
 
-static void _sdl_draw(uint8_t *data, int x, int y, int w, int h) {
-    Uint16 *pixel_data = (Uint16 *)(data);
+static void _sdl_present() {
+    Uint16(*vmem_display)[DISPLAY_WIDTH] = (Uint16(*)[DISPLAY_WIDTH])vmem;
 
-    for (int row = 0; row < h; row++) {
-        for (int col = 0; col < w; col++) {
-            int    index   = row * w + col;
-            Uint16 color16 = pixel_data[index];
+    for (int row = 0; row < DISPLAY_HEIGHT; row++) {
+        for (int col = 0; col < DISPLAY_WIDTH; col++) {
+            Uint16 color16 = vmem_display[row][col];
 
             if (color16 == 0) {
                 continue;
             }
 
-            Uint8 r = ((color16 & 0xF000) >> 12) << 4;
-            Uint8 g = ((color16 & 0x0F00) >> 8) << 4;
-            Uint8 b = ((color16 & 0x00F0) >> 4) << 4;
+            Uint8 r = ((color16 & 0xF800) >> 11) << 3;
+            Uint8 g = ((color16 & 0x07E0) >> 5) << 2;
+            Uint8 b = ((color16 & 0x001F)) << 3;
 
             SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-            SDL_RenderDrawPoint(renderer, x + col, y + row);
+            SDL_RenderDrawPoint(renderer, col, row);
         }
     }
-}
 
-static void _sdl_present() {
     SDL_RenderPresent(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -82,10 +80,9 @@ minimal_api_t platform_sdl2_init(int target_fps) {
     g_target_frame_time = 1000 / target_fps;
 
     minimal_api_t sdl_api = {
-        .vmem             = malloc(VMEM_SIZE),
+        .vmem             = vmem,
         .get_button_state = _sdl_get_button_state,
         .get_ticks_ms     = _sdl_get_ticks_ms,
-        .draw             = _sdl_draw,
         .present          = _sdl_present,
     };
 

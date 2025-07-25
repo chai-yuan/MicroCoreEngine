@@ -39,7 +39,7 @@ static unsigned int _sdl_get_button_state() {
 // 图形资源
 static platform_image_t _sdl_gfx_create_image(int width, int height, const void *data) {
     SDL_Texture *texture =
-        SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_RGBA4444, SDL_TEXTUREACCESS_STATIC, width, height);
+        SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STATIC, width, height);
     if (!texture) {
         SDL_Log("Failed to create texture: %s", SDL_GetError());
         return NULL;
@@ -54,7 +54,7 @@ static platform_image_t _sdl_gfx_create_image(int width, int height, const void 
 
 static platform_image_t _sdl_gfx_create_render_target(int width, int height) {
     SDL_Texture *texture =
-        SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_RGBA4444, SDL_TEXTUREACCESS_TARGET, width, height);
+        SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_TARGET, width, height);
     if (!texture) {
         SDL_Log("Failed to create render target texture: %s", SDL_GetError());
         return NULL;
