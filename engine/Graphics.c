@@ -1,6 +1,6 @@
 #include "GameEnginePriv.h"
 
-void graphics_clear(Palette_idx color) { platform.gfx_clear(color); }
+void graphics_clear(Color color) { platform.gfx_clear(color); }
 
 void graphics_display(void) {
 #ifdef ENABLE_DEBUG_COL
@@ -23,11 +23,8 @@ ImageHandle graphics_loadImage(int width, int height, PixelFormat format, const 
 
 ImageHandle graphics_newImage(int width, int height, PixelFormat format) {
     Image *image = system_malloc(sizeof(Image));
-    image->ptr   = platform.gfx_create_render_target(width, height, format);
+    image->ptr   = platform.gfx_create_image(width, height, format, NULL);
     image->rect  = (Rect){0, 0, width, height};
-
-    if (!image->ptr)
-        return NULL;
     return image;
 }
 
@@ -41,11 +38,11 @@ void graphics_pushContext(ImageHandle target) { platform.gfx_set_render_target((
 
 void graphics_popContext(void) { platform.gfx_set_render_target(NULL); }
 
-void graphics_drawRect(Rect rect, Palette_idx color) { platform.gfx_draw_rect(rect, color); }
+void graphics_drawRect(Rect rect, Color color) { platform.gfx_draw_rect(rect, color); }
 
 ImageTableHandle graphics_newImageTable(int count, int width, int height, PixelFormat format) {
     ImageTable *table = system_malloc(sizeof(ImageTable));
-    table->ptr        = platform.gfx_create_render_target(width, height * count, format);
+    table->ptr        = platform.gfx_create_image(width, height * count, format, NULL);
     table->count      = count;
     table->w          = width;
     table->h          = height;

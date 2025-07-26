@@ -8,6 +8,6 @@ SRCS = $(shell find $(SRCS_DIR) -name '*.c')
 SRCS += $(shell find games -name '*.c')
 HEADS = $(shell find $(SRCS_DIR) -name '*.h')
 
-PLATFORM ?= sdl2
+PLATFORM ?= sdl2_mini
 PLATFORM_DIR = platform/$(PLATFORM)
 include $(PLATFORM_DIR)/Makefile

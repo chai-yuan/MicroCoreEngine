@@ -9,11 +9,9 @@ int              g_x            = 0;
 int              g_y            = 0;
 TileMapHandle    g_tilemap      = NULL;
 SpriteHandle     g_sprite       = NULL;
-
-char mapData[10][10] = {{0, 0, 0, 6, 6, 6, 0, 0, 0, 0}, {0, 0, 0, 6, 6, 6, 0, 0, 0, 0}, {0, 0, 0, 6, 6, 6, 0, 0, 0, 0},
-                        {0, 0, 0, 6, 6, 6, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 3, 0, 0, 0}, {2, 2, 2, 2, 2, 2, 2, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+uint8_t          mapData[8][8]  = {{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 7, 7, 0, 0}, {0, 0, 0, 0, 6, 7, 0, 0},
+                                   {0, 0, 0, 0, 6, 7, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 11, 0, 0, 0, 12},
+                                   {1, 1, 1, 1, 1, 1, 3, 3}, {2, 2, 2, 3, 3, 4, 4, 4}};
 
 void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
     if (info.normal.x != 0)
@@ -28,7 +26,7 @@ void game_init(void) {
     g_tilemap      = tilemap_newTilemap();
     g_sprite       = sprite_newSprite();
     tilemap_setImageTable(g_tilemap, g_test_image);
-    tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 10, 10);
+    tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 8, 8);
     tilemap_addTilemap(g_tilemap);
 
     sprite_setImage(g_sprite, graphics_getTableImage(g_sprite_image, 0), imageUnflipped);

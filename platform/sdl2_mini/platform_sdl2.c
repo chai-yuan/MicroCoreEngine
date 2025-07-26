@@ -81,6 +81,8 @@ minimal_api_t platform_sdl2_init(int target_fps) {
 
     minimal_api_t sdl_api = {
         .vmem             = vmem,
+        .mem_alloc        = malloc,
+        .mem_free         = free,
         .get_button_state = _sdl_get_button_state,
         .get_ticks_ms     = _sdl_get_ticks_ms,
         .present          = _sdl_present,

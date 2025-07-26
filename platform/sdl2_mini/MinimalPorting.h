@@ -3,12 +3,14 @@
 
 #include "GameEngineDef.h"
 
-#define VMEM_SIZE 1024 * 1024
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 128
+#define VMEM_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT * 2)
 
 typedef struct {
     uint8_t *vmem;
+    void *(*mem_alloc)(size_t size);
+    void (*mem_free)(void *ptr);
     unsigned int (*get_ticks_ms)(void);
     unsigned int (*get_button_state)(void);
     void (*present)(void);
