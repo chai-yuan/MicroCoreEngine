@@ -23,8 +23,8 @@ void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo inf
 }
 
 void game_init(void) {
-    g_test_image   = graphics_loadImageTable(12, 16, 16, tiles_data);
-    g_sprite_image = graphics_loadImageTable(6, 40, 32, my_sprite_data);
+    g_test_image   = graphics_loadImageTable(12, 16, 16, pixelFormatPalette, tiles_data);
+    g_sprite_image = graphics_loadImageTable(6, 40, 32, pixelFormatPalette, my_sprite_data);
     g_tilemap      = tilemap_newTilemap();
     g_sprite       = sprite_newSprite();
     tilemap_setImageTable(g_tilemap, g_test_image);
@@ -56,7 +56,7 @@ void game_loop(void) {
         sprite_moveWithCollisions(g_sprite, 0, 4);
 
     // --- 渲染 ---
-    graphics_clear((Color){0, 0, 0, 255});
+    graphics_clear(0);
     tilemap_drawAtPoint(g_tilemap, 0, 0, 0);
     sprite_updateAndDrawSprites();
     graphics_display();

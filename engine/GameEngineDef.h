@@ -5,9 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct {
-    unsigned char r, g, b, a;
-} Color;
+typedef uint16_t Color;       // RGB565
+typedef uint8_t  Palette_idx; // RGB565 (0-15)
 typedef struct {
     int x, y, w, h;
 } Rect;
@@ -21,7 +20,7 @@ typedef struct {
     int   *dx, *dy;
     Vector normal;
 } CollisionInfo;
-typedef enum { pixelRGBA4444 } PixelFormat;
+typedef enum { pixelFormatPalette, pixelFormatPaletteRLE, pixelFormatMonochrome } PixelFormat;
 typedef enum { drawNormal, drawAlpha, drawAdd, drawMultiply } ImageDrawMode;
 typedef enum { imageUnflipped, imageFlippedX, imageFlippedY, imageFlippedXY } ImageFlip;
 typedef enum { buttonLeft = 1, buttonRight = 2, buttonUp = 4, buttonDown = 8, buttonA = 16, buttonB = 32 } Button;

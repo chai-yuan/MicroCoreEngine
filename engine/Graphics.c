@@ -1,6 +1,6 @@
 #include "GameEnginePriv.h"
 
-void graphics_clear(Color color) { platform.gfx_clear(color); }
+void graphics_clear(Palette_idx color) { platform.gfx_clear(color); }
 
 void graphics_display(void) {
 #ifdef ENABLE_DEBUG_COL
@@ -14,22 +14,20 @@ void graphics_display(void) {
     platform.gfx_present();
 }
 
-ImageHandle graphics_loadImage(int width, int height, const uint8_t *data) {
+ImageHandle graphics_loadImage(int width, int height, PixelFormat format, const uint8_t *data) {
     Image *image = system_malloc(sizeof(Image));
-    image->ptr   = platform.gfx_create_image(width, height, data);
+    image->ptr   = platform.gfx_create_image(width, height, format, data);
     image->rect  = (Rect){0, 0, width, height};
     return image;
 }
-ImageHandle graphics_newImage(int width, int height, Color bgcolor) {
+
+ImageHandle graphics_newImage(int width, int height, PixelFormat format) {
     Image *image = system_malloc(sizeof(Image));
-    image->ptr   = platform.gfx_create_render_target(width, height);
+    image->ptr   = platform.gfx_create_render_target(width, height, format);
     image->rect  = (Rect){0, 0, width, height};
 
     if (!image->ptr)
         return NULL;
-    platform.gfx_set_render_target(image->ptr);
-    platform.gfx_clear(bgcolor);
-    platform.gfx_set_render_target(NULL);
     return image;
 }
 
@@ -43,22 +41,20 @@ void graphics_pushContext(ImageHandle target) { platform.gfx_set_render_target((
 
 void graphics_popContext(void) { platform.gfx_set_render_target(NULL); }
 
-void graphics_drawRect(Rect rect, Color color) { platform.gfx_draw_rect(rect, color); }
+void graphics_drawRect(Rect rect, Palette_idx color) { platform.gfx_draw_rect(rect, color); }
 
-void graphics_drawLine(Point p1, Point p2, int width, Color color) { platform.gfx_draw_line(p1, p2, width, color); }
-
-ImageTableHandle graphics_newImageTable(int count, int width, int height) {
+ImageTableHandle graphics_newImageTable(int count, int width, int height, PixelFormat format) {
     ImageTable *table = system_malloc(sizeof(ImageTable));
-    table->ptr        = platform.gfx_create_render_target(width, height * count);
+    table->ptr        = platform.gfx_create_render_target(width, height * count, format);
     table->count      = count;
     table->w          = width;
     table->h          = height;
     return table;
 }
 
-ImageTableHandle graphics_loadImageTable(int count, int width, int height, const uint8_t *data) {
+ImageTableHandle graphics_loadImageTable(int count, int width, int height, PixelFormat format, const uint8_t *data) {
     ImageTable *table = system_malloc(sizeof(ImageTable));
-    table->ptr        = platform.gfx_create_image(width, height * count, data);
+    table->ptr        = platform.gfx_create_image(width, height * count, format, data);
     table->count      = count;
     table->w          = width;
     table->h          = height;

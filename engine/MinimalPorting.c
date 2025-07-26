@@ -18,24 +18,17 @@ static Rect           current_clip_rect;
 
 static void            *wrapper_mem_alloc(size_t size);
 static void             wrapper_mem_free(void *ptr);
-static platform_image_t wrapper_gfx_create_image(int width, int height, const void *data);
+static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFormat format, const void *data);
 static void             wrapper_gfx_destroy_image(platform_image_t image);
-static platform_image_t wrapper_gfx_create_render_target(int width, int height);
+static platform_image_t wrapper_gfx_create_render_target(int width, int height, PixelFormat format);
 static void             wrapper_gfx_set_render_target(platform_image_t image);
 static void             wrapper_gfx_set_clip_rect(Rect rect);
-static void             wrapper_gfx_clear(Color color);
+static void             wrapper_gfx_clear(Palette_idx color);
 static void             wrapper_gfx_present(void);
 static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect, int x, int y, ImageFlip flip);
-static void wrapper_gfx_draw_rect(Rect rect, Color color);
+static void wrapper_gfx_draw_rect(Rect rect, Palette_idx color);
 static int  wrapper_display_get_width(void);
 static int  wrapper_display_get_height(void);
-
-static inline uint16_t color2RGB565(Color c) {
-    if (c.a < 128) {
-        return 0;
-    }
-    return ((c.r >> 3) << 11) | ((c.g >> 2) << 5) | (c.b >> 3);
-}
 
 void minimal_register_api(const minimal_api_t api) {
     mini_platform = api;
@@ -66,7 +59,6 @@ void minimal_register_api(const minimal_api_t api) {
                                   .gfx_clear      = wrapper_gfx_clear,
                                   .gfx_present    = wrapper_gfx_present,
                                   .gfx_draw_image = wrapper_gfx_draw_image,
-                                  .gfx_draw_line  = NULL, // Not implemented for simplicity
                                   .gfx_draw_rect  = wrapper_gfx_draw_rect,
                                   // Display Info
                                   .display_get_width  = wrapper_display_get_width,
@@ -90,7 +82,7 @@ static void wrapper_mem_free(void *ptr) {
     // No-op
 }
 
-static platform_image_t wrapper_gfx_create_image(int width, int height, const void *data) {
+static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFormat format, const void *data) {
     InternalImage *img = (InternalImage *)wrapper_mem_alloc(sizeof(InternalImage));
     if (!img)
         return NULL;
@@ -110,9 +102,9 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, const vo
     return (platform_image_t)img;
 }
 
-static platform_image_t wrapper_gfx_create_render_target(int width, int height) {
+static platform_image_t wrapper_gfx_create_render_target(int width, int height, PixelFormat format) {
     int size = width * height * 2;
-    return wrapper_gfx_create_image(width, height, wrapper_mem_alloc(size));
+    return wrapper_gfx_create_image(width, height, format, wrapper_mem_alloc(size));
 }
 
 static void wrapper_gfx_destroy_image(platform_image_t image) {
@@ -123,19 +115,14 @@ static void wrapper_gfx_set_render_target(platform_image_t image) { current_rend
 
 static void wrapper_gfx_set_clip_rect(Rect rect) { current_clip_rect = rect; }
 
-static void wrapper_gfx_clear(Color color) {
-    uint16_t bk_color = color2RGB565(color);
-    for (int i = 0; i < DISPLAY_HEIGHT; i++) {
-        for (int i2 = 0; i2 < DISPLAY_WIDTH; i2++) {
-            vmem_display[i][i2] = bk_color;
-        }
-    }
+static void wrapper_gfx_clear(Palette_idx color) {
+    // No-op
 }
 
 static void wrapper_gfx_present(void) { mini_platform.present(); }
 
 static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect, int x, int y, ImageFlip flip) {
-    InternalImage *img   = (InternalImage *)image;
+    InternalImage *img = (InternalImage *)image;
 
     Rect r;
     if (src_rect) {
@@ -157,7 +144,7 @@ static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect,
         }
 }
 
-static void wrapper_gfx_draw_rect(Rect rect, Color color) { WARN("wrapper_gfx_draw_rect not implemented"); }
+static void wrapper_gfx_draw_rect(Rect rect, Palette_idx color) { WARN("wrapper_gfx_draw_rect not implemented"); }
 
 static int wrapper_display_get_width(void) { return DISPLAY_WIDTH; }
 
