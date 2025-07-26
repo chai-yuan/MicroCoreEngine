@@ -23,6 +23,8 @@ static inline void drawPixel(int x, int y, uint16_t pixel);
 
 static void            *wrapper_mem_alloc(size_t size);
 static void             wrapper_mem_free(void *ptr);
+static unsigned int     wrapper_get_ticks_ms(void);
+static unsigned int     wrapper_get_button_state(void);
 static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFormat format, const void *data);
 static void             wrapper_gfx_destroy_image(platform_image_t image);
 static void             wrapper_gfx_set_render_target(platform_image_t image);
@@ -48,8 +50,8 @@ void minimal_register_api(const minimal_api_t api) {
                                   .mem_alloc = wrapper_mem_alloc,
                                   .mem_free  = wrapper_mem_free,
                                   // Time & Input (Direct mapping)
-                                  .get_ticks_ms     = mini_platform.get_ticks_ms,
-                                  .get_button_state = mini_platform.get_button_state,
+                                  .get_ticks_ms     = wrapper_get_ticks_ms,
+                                  .get_button_state = wrapper_get_button_state,
                                   // Graphics Resource Management
                                   .gfx_create_image   = wrapper_gfx_create_image,
                                   .gfx_update_image   = NULL, // Not implemented for simplicity
@@ -73,6 +75,10 @@ void minimal_register_api(const minimal_api_t api) {
 static void *wrapper_mem_alloc(size_t size) { return mini_platform.mem_alloc(size); }
 
 static void wrapper_mem_free(void *ptr) { mini_platform.mem_free(ptr); }
+
+static unsigned int wrapper_get_ticks_ms(void) { return mini_platform.get_ticks_ms(); }
+
+static unsigned int wrapper_get_button_state(void) { return mini_platform.get_button_state(); }
 
 static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFormat format, const void *data) {
     InternalImage *img = (InternalImage *)wrapper_mem_alloc(sizeof(InternalImage));
@@ -142,8 +148,8 @@ static void wrapper_gfx_draw_image(platform_image_t image, const Rect *src_rect,
     int blit_w = source_rect.w;
     int blit_h = source_rect.h;
 
-    int dest_x = x;
-    int dest_y = y;
+    int dest_x       = x;
+    int dest_y       = y;
     int src_offset_x = 0;
     int src_offset_y = 0;
 
