@@ -86,7 +86,7 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
         return NULL;
 
     int size = 0;
-    if (format == pixelFormatPalette) {
+    if (format == pixelFormatPalette || format == pixelFormatPaletteRLE) {
         size = width * height / 2;
     } else {
         ERROR("TODO");
@@ -100,9 +100,24 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
         return NULL;
     }
 
-    if (data) {
+    if (format == pixelFormatPalette) {
         for (int i = 0; i < size; i++)
             img->pixels[i] = ((const uint8_t *)data)[i];
+    } else if (format == pixelFormatPaletteRLE) { // 解压缩
+        int pixel_idx = 0, i = 0;
+        while (pixel_idx < size) {
+            uint8_t count = ((const uint8_t *)data)[i++];
+
+            if (count <= 0x80) {
+                while (count--)
+                    img->pixels[pixel_idx++] = ((const uint8_t *)data)[i];
+                i += 1;
+            } else {
+                count = count & 0x7f;
+                while (count--)
+                    img->pixels[pixel_idx++] = ((const uint8_t *)data)[i++];
+            }
+        }
     }
 
     return (platform_image_t)img;
