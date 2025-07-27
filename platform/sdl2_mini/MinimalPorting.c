@@ -200,7 +200,7 @@ static inline uint16_t getImagePixel(InternalImage *image, int x, int y) {
 }
 
 static inline void drawPixel(int x, int y, uint16_t pixel) {
-    if (x < 0 || x >= DISPLAY_WIDTH || y < 0 || y >= DISPLAY_HEIGHT) {
+    if (pixel == 0 || x < 0 || x >= DISPLAY_WIDTH || y < 0 || y >= DISPLAY_HEIGHT) {
         return;
     }
     vmem_display[y][x] = pixel;
