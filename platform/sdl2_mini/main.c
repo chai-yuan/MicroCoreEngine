@@ -1,7 +1,7 @@
 #include "platform_sdl2.h"
 #include <stdio.h>
 
-int main(int argc, char *argv[]) {
+int main() {
     minimal_api_t sdl_api = platform_sdl2_init(30);
     minimal_register_api(sdl_api);
     game_init();
