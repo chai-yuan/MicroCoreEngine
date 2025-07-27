@@ -1,6 +1,9 @@
 #include "GameEnginePriv.h"
 
 static inline int checkSpriteTilemapCollision(const SpriteHandle s, const TileMapHandle t) {
+    if (t->collision == NULL)
+        return 0;
+
     int tileSizeW = t->table->w;
     int tileSizeH = t->table->h;
 
@@ -19,9 +22,9 @@ static inline int checkSpriteTilemapCollision(const SpriteHandle s, const TileMa
         for (int col = startCol; (col <= endCol) && (col < t->tilesw); ++col) {
             // 获取瓦片在一维数组中的索引
             int tileIndex = row * t->tilesw + col;
-            /*if (t->tiles[tileIndex]) {*/
-            /*    return 1;*/
-            /*}*/
+            if (t->collision[tileIndex] & s->collisionMask) {
+                return 1;
+            }
         }
     }
     return 0;

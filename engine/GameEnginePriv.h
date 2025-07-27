@@ -18,13 +18,14 @@ typedef struct ImageTable {
 typedef struct TileMap {
     ImageTableHandle table;
     uint8_t         *tiles;
+    uint8_t         *collision;
     int              tilesw, tilesh;
 } TileMap;
 typedef struct Sprite {
     ImageHandle             image;
     ImageFlip               flip;
     int                     x, y;
-    uint32_t                mask;
+    uint8_t                 collisionMask;
     Rect                    collisionRect;
     SpriteUpdateFunction    updatefunc;
     SpriteCollisionFunction collisionfunc;

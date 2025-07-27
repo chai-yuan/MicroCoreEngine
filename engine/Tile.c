@@ -3,7 +3,8 @@
 TileMapHandle g_tilemaps[TILEMAP_NUM] = {NULL};
 
 TileMapHandle tilemap_newTilemap(void) {
-    TileMap *tile = platform.mem_alloc(sizeof(TileMap));
+    TileMap *tile   = platform.mem_alloc(sizeof(TileMap));
+    tile->collision = NULL;
     return tile;
 }
 void tilemap_freeTilemap(TileMapHandle tilemap) { platform.mem_free(tilemap); }

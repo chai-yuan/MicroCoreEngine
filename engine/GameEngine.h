@@ -64,8 +64,8 @@ ImageFlip    sprite_getImageFlip(SpriteHandle sprite);
 void         sprite_setUpdateFunction(SpriteHandle sprite, SpriteUpdateFunction func);
 void         sprite_setCollideRect(SpriteHandle sprite, Rect collideRect);
 Rect         sprite_getCollideRect(SpriteHandle sprite);
-uint32_t     sprite_getCollideMask(SpriteHandle sprite);
-void         sprite_setCollideMask(SpriteHandle sprite, uint32_t mask);
+uint8_t      sprite_getCollideMask(SpriteHandle sprite);
+void         sprite_setCollideMask(SpriteHandle sprite, uint8_t mask);
 void         sprite_setCollisionResponseFunction(SpriteHandle sprite, SpriteCollisionFunction func);
 void         sprite_moveWithCollisions(SpriteHandle s, int dx, int dy);
 

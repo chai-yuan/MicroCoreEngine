@@ -73,9 +73,9 @@ void sprite_setCollideRect(SpriteHandle sprite, Rect collideRect) { sprite->coll
 
 Rect sprite_getCollideRect(SpriteHandle sprite) { return sprite->collisionRect; }
 
-uint32_t sprite_getCollideMask(SpriteHandle sprite) { return sprite->mask; }
+uint8_t sprite_getCollideMask(SpriteHandle sprite) { return sprite->collisionMask; }
 
-void sprite_setCollideMask(SpriteHandle sprite, uint32_t mask) { sprite->mask = mask; }
+void sprite_setCollideMask(SpriteHandle sprite, uint8_t mask) { sprite->collisionMask = mask; }
 
 void sprite_setCollisionResponseFunction(SpriteHandle sprite, SpriteCollisionFunction func) {
     sprite->collisionfunc = func;
