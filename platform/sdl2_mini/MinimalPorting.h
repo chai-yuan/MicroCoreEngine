@@ -5,7 +5,7 @@
 
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
-#define VMEM_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT * 3)
+#define VMEM_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT * 2)
 
 typedef struct {
     uint8_t *vmem;

@@ -22,9 +22,10 @@ typedef struct TileMap {
     int              tilesw, tilesh;
 } TileMap;
 typedef struct Sprite {
-    ImageHandle             image;
+    ImageTableHandle        image;
     ImageFlip               flip;
     int                     x, y;
+    int                     begin, end, div, idx;
     uint8_t                 collisionMask;
     Rect                    collisionRect;
     SpriteUpdateFunction    updatefunc;
@@ -35,6 +36,7 @@ typedef struct Sprite {
 extern SpriteHandle g_sprites[SPRITE_NUM];
 #define TILEMAP_NUM 4
 extern TileMapHandle g_tilemaps[TILEMAP_NUM];
+extern uint32_t g_ticks;
 
 static inline int max(int a, int b) { return a > b ? a : b; }
 

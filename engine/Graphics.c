@@ -12,6 +12,7 @@ void graphics_display(void) {
 
 #endif
     platform.gfx_present();
+    g_ticks++; // TODO 应该被移动到其他位置
 }
 
 ImageHandle graphics_loadImage(int width, int height, PixelFormat format, const uint8_t *data) {
@@ -55,6 +56,15 @@ ImageTableHandle graphics_loadImageTable(int count, int width, int height, Pixel
     table->count      = count;
     table->w          = width;
     table->h          = height;
+    return table;
+}
+
+ImageTableHandle graphics_tableFromImage(ImageHandle image) {
+    ImageTable *table = system_malloc(sizeof(ImageTable));
+    table->ptr        = image->ptr;
+    table->count      = 1;
+    table->w          = image->rect.w;
+    table->h          = image->rect.h;
     return table;
 }
 

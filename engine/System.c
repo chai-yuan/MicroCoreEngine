@@ -1,5 +1,7 @@
 #include "GameEnginePriv.h"
 
+uint32_t g_ticks = 0;
+
 void *system_malloc(size_t size) {
     void *ptr = platform.mem_alloc(size);
     if (ptr == NULL) {

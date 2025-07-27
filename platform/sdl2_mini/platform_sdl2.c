@@ -4,7 +4,7 @@
 #include <stdlib.h> // For malloc/free
 
 // 放大倍率
-#define SCALE_FACTOR 2
+#define SCALE_FACTOR 4
 // 最终窗口的实际大小
 #define SCREEN_WIDTH (DISPLAY_WIDTH * SCALE_FACTOR)
 #define SCREEN_HEIGHT (DISPLAY_HEIGHT * SCALE_FACTOR)

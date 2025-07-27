@@ -7,6 +7,8 @@ SpriteHandle sprite_newSprite(void) {
     sprite->image         = NULL;
     sprite->updatefunc    = NULL;
     sprite->collisionfunc = NULL;
+    sprite->idx           = 0;
+    sprite->div           = 0;
     return sprite;
 }
 
@@ -28,6 +30,12 @@ void sprite_removeSprite(SpriteHandle sprite) {
         }
 }
 
+void sprite_setAnimation(SpriteHandle sprite, int begin, int end, int div) {
+    sprite->begin = begin;
+    sprite->end   = end;
+    sprite->div   = div;
+}
+
 void sprite_updateAndDrawSprites(void) {
     // 更新行为
     for (int i = 0; i < SPRITE_NUM; i++)
@@ -38,8 +46,13 @@ void sprite_updateAndDrawSprites(void) {
         if (g_sprites[i]) {
             SpriteHandle s = g_sprites[i];
             if (s->image != NULL) {
-                graphics_drawImage(s->image, s->x, s->y, s->flip);
-            } else {
+                graphics_drawImageTable(s->image, s->x, s->y, s->idx, s->flip);
+            }
+
+            if ((s->div != 0) && (g_ticks % s->div == 0)) {
+                s->idx++;
+                if (s->idx > s->end || s->idx <= s->begin)
+                    s->idx = s->begin;
             }
         }
 }
@@ -59,9 +72,11 @@ void sprite_getPosition(SpriteHandle sprite, int *x, int *y) {
 }
 
 void sprite_setImage(SpriteHandle sprite, ImageHandle image, ImageFlip flip) {
-    sprite->image = image;
+    sprite->image = graphics_tableFromImage(image);
     sprite->flip  = flip;
 }
+
+void sprite_setImageTable(SpriteHandle sprite, ImageTableHandle table) { sprite->image = table; }
 
 void sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
 

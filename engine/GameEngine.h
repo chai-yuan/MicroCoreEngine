@@ -18,6 +18,7 @@ ImageHandle      graphics_loadImage(int width, int height, PixelFormat format, c
 ImageHandle      graphics_newImage(int width, int height, PixelFormat format);
 ImageTableHandle graphics_newImageTable(int count, int width, int height, PixelFormat format);
 ImageTableHandle graphics_loadImageTable(int count, int width, int height, PixelFormat format, const uint8_t *data);
+ImageTableHandle graphics_tableFromImage(ImageHandle image);
 void             graphics_pushContext(ImageHandle target);
 void             graphics_popContext(void);
 void             graphics_setDrawMode(ImageDrawMode mode);
@@ -57,8 +58,9 @@ void         sprite_updateAndDrawSprites(void);
 void         sprite_moveTo(SpriteHandle sprite, int x, int y);
 void         sprite_getPosition(SpriteHandle sprite, int *x, int *y);
 void         sprite_setImage(SpriteHandle sprite, ImageHandle image, ImageFlip flip);
+void         sprite_setImageTable(SpriteHandle sprite, ImageTableHandle table);
+void         sprite_setAnimation(SpriteHandle sprite, int begin, int end, int div);
 void         sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
-void         sprite_setVisible(SpriteHandle sprite, int flag);
 void         sprite_setImageFlip(SpriteHandle sprite, ImageFlip flip);
 ImageFlip    sprite_getImageFlip(SpriteHandle sprite);
 void         sprite_setUpdateFunction(SpriteHandle sprite, SpriteUpdateFunction func);
