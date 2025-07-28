@@ -75,7 +75,7 @@ void game_loop(void) {
 
     // --- 渲染 ---
     graphics_clear(0x2233);
-    tilemap_drawAtPoint(g_tilemap, 0, 0, 0);
+    tilemap_drawAtPoint(g_tilemap, 0, 0);
     sprite_updateAndDrawSprites();
     graphics_display();
 }

@@ -21,7 +21,6 @@ ImageTableHandle graphics_loadImageTable(int count, int width, int height, Pixel
 ImageTableHandle graphics_tableFromImage(ImageHandle image);
 void             graphics_pushContext(ImageHandle target);
 void             graphics_popContext(void);
-void             graphics_setDrawMode(ImageDrawMode mode);
 void             graphics_drawImage(ImageHandle image, int x, int y, ImageFlip flip);
 void             graphics_setDrawOffset(int dx, int dy);
 void             graphics_setClipRect(Rect rect);
@@ -33,6 +32,7 @@ void             graphics_getImageTableSize(ImageHandle image, int *width, int *
 ImageHandle      graphics_getTableImage(ImageTableHandle table, int idx);
 void             graphics_drawImageTable(ImageTableHandle table, int x, int y, int idx, ImageFlip flip);
 void             graphics_freeImageTable(ImageTableHandle table);
+// void       graphics_setDrawMode(ImageDrawMode mode);
 // int        graphics_drawText(const void *text, size_t len, PDStringEncoding encoding, int x, int y);
 // void       graphics_setFont(LCDFont *font);
 
@@ -46,7 +46,7 @@ void             tilemap_getPixelSize(TileMapHandle tilemap, uint32_t *width, ui
 void             tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles, int tilesWide, int tilesHigh);
 void             tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int tiley, uint8_t idx);
 int              tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley);
-void             tilemap_drawAtPoint(TileMapHandle m, int x, int y, ImageDrawMode mode);
+void             tilemap_drawAtPoint(TileMapHandle m, int x, int y);
 void             tilemap_addTilemap(TileMapHandle tilemap);
 void             tilemap_removeTilemap(TileMapHandle tilemap);
 

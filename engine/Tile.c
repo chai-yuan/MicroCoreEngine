@@ -55,7 +55,7 @@ int tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley) {
     return tilemap->tiles[tilex + tiley * tilemap->tilesw];
 }
 
-void tilemap_drawAtPoint(TileMapHandle m, int x, int y, ImageDrawMode mode) {
+void tilemap_drawAtPoint(TileMapHandle m, int x, int y) {
     int drawx, drawy = y;
 
     for (int r = 0; r < m->tilesh; r++) {

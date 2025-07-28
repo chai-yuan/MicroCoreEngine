@@ -32,9 +32,9 @@ typedef struct Sprite {
     SpriteCollisionFunction collisionfunc;
 } Sprite;
 
-#define SPRITE_NUM 8
+#define SPRITE_NUM 16
 extern SpriteHandle g_sprites[SPRITE_NUM];
-#define TILEMAP_NUM 4
+#define TILEMAP_NUM 2
 extern TileMapHandle g_tilemaps[TILEMAP_NUM];
 extern uint32_t g_ticks;
 
