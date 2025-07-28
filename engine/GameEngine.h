@@ -8,6 +8,8 @@ void         system_free(void *ptr);
 void         system_setFPS(int fps);
 unsigned int system_getButtonState(void);
 unsigned int system_getCurrentTime(void);
+void         system_srand(unsigned int seed);
+int          system_rand(void);
 
 int display_getHeight(void);
 int display_getWidth(void);
