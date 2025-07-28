@@ -35,9 +35,9 @@ void graphics_drawImage(ImageHandle image, int x, int y, ImageFlip flip) {
     platform.gfx_draw_image(image->ptr, &image->rect, x, y, flip);
 }
 
-void graphics_pushContext(ImageHandle target) { platform.gfx_set_render_target((platform_image_t)target); }
+void graphics_pushContext(ImageHandle target) { platform.gfx_set_render_target((platform_image_t)target->ptr); }
 
-void graphics_popContext(void) { platform.gfx_set_render_target(NULL); }
+void graphics_popContext(void) { platform.gfx_set_render_target(0); }
 
 void graphics_drawRect(Rect rect, Color color) { platform.gfx_draw_rect(rect, color); }
 

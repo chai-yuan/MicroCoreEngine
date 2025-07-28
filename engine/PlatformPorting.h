@@ -4,7 +4,7 @@
 #include "GameEngineDef.h"
 
 // 平台层管理的图形句柄
-typedef void *platform_image_t;
+typedef uintptr_t platform_image_t;
 
 typedef struct {
     // --- 内存管理 ---
