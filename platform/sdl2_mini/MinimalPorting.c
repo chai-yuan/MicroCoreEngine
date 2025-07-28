@@ -83,7 +83,7 @@ static unsigned int wrapper_get_button_state(void) { return mini_platform.get_bu
 static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFormat format, const void *data) {
     InternalImage *img = (InternalImage *)wrapper_mem_alloc(sizeof(InternalImage));
     if (!img)
-        return NULL;
+        return 0;
 
     int size = 0;
     if (format == pixelFormatPalette || format == pixelFormatPaletteRLE) {
@@ -97,7 +97,7 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
     img->pixels = (uint8_t *)wrapper_mem_alloc(size);
     if (!img->pixels) {
         WARN("Not enough space for pixel data");
-        return NULL;
+        return 0;
     }
 
     if (format == pixelFormatPalette) {
@@ -123,9 +123,7 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
     return (platform_image_t)img;
 }
 
-static void wrapper_gfx_destroy_image(platform_image_t image) {
-    // No-op
-}
+static void wrapper_gfx_destroy_image(platform_image_t image) { ERROR("TODO"); }
 
 static void wrapper_gfx_set_render_target(platform_image_t image) { current_render_target = (InternalImage *)image; }
 

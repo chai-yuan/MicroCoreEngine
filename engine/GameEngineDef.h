@@ -29,7 +29,7 @@ typedef struct ImageTable *ImageTableHandle;
 typedef struct TileMap    *TileMapHandle;
 typedef struct Sprite     *SpriteHandle;
 
-typedef void (*SpriteUpdateFunction)(void);
+typedef void (*SpriteUpdateFunction)(SpriteHandle self);
 typedef void (*SpriteCollisionFunction)(SpriteHandle self, SpriteHandle other, CollisionInfo info);
 
 #endif
