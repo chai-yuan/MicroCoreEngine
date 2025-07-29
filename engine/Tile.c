@@ -25,9 +25,9 @@ void tilemap_removeTilemap(TileMapHandle tilemap) {
         }
 }
 
-void tilemap_setImageTable(TileMapHandle tilemap, ImageTableHandle table) { tilemap->table = table; }
+void tilemap_setImage(TileMapHandle tilemap, ImageHandle table) { tilemap->image = table; }
 
-ImageTableHandle tilemap_getImageTable(TileMapHandle tilemap) { return tilemap->table; }
+ImageHandle tilemap_getImageTable(TileMapHandle tilemap) { return tilemap->image; }
 
 void tilemap_setSize(TileMapHandle tilemap, int tilesWide, int tilesHigh) {
     tilemap->tilesw = tilesWide;
@@ -64,11 +64,11 @@ void tilemap_drawAtPoint(TileMapHandle m, int x, int y) {
             int idx = m->tiles[c + r * m->tilesw];
 
             if (idx) {
-                graphics_drawImageTable(m->table, drawx, drawy, idx - 1, imageUnflipped);
+                graphics_drawImage(m->image, drawx, drawy, idx - 1, imageUnflipped);
             }
 
-            drawx += m->table->w;
+            drawx += m->image->w;
         }
-        drawy += m->table->h;
+        drawy += m->image->h;
     }
 }

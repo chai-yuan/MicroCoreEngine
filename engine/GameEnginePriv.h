@@ -9,20 +9,17 @@ extern platform_api_t platform;
 
 typedef struct Image {
     platform_image_t ptr;
+    int              w, h, count;
     Rect             rect;
 } Image;
-typedef struct ImageTable {
-    platform_image_t ptr;
-    int              w, h, count;
-} ImageTable;
 typedef struct TileMap {
-    ImageTableHandle table;
-    uint8_t         *tiles;
-    uint8_t         *collision;
-    int              tilesw, tilesh;
+    ImageHandle image;
+    uint8_t    *tiles;
+    uint8_t    *collision;
+    int         tilesw, tilesh;
 } TileMap;
 typedef struct Sprite {
-    ImageTableHandle        image;
+    ImageHandle             image;
     ImageFlip               flip;
     int                     x, y;
     int                     begin, end, div, idx;
@@ -36,7 +33,7 @@ typedef struct Sprite {
 extern SpriteHandle g_sprites[SPRITE_NUM];
 #define TILEMAP_NUM 2
 extern TileMapHandle g_tilemaps[TILEMAP_NUM];
-extern uint32_t g_ticks;
+extern uint32_t      g_ticks;
 
 static inline int max(int a, int b) { return a > b ? a : b; }
 

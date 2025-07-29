@@ -4,8 +4,8 @@ static inline int checkSpriteTilemapCollision(const SpriteHandle s, const TileMa
     if (t->collision == NULL)
         return 0;
 
-    int tileSizeW = t->table->w;
-    int tileSizeH = t->table->h;
+    int tileSizeW = t->image->w;
+    int tileSizeH = t->image->h;
 
     int hitbox_x  = s->x + s->collisionRect.x;
     int hitbox_y  = s->y + s->collisionRect.y;

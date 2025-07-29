@@ -3,13 +3,13 @@
 #include "sprite.img.h"
 #include "tiles.img.h"
 
-ImageTableHandle g_test_image   = NULL;
-ImageTableHandle g_sprite_image = NULL;
-int              g_x            = 0;
-int              g_y            = 0;
-TileMapHandle    g_tilemap      = NULL;
-SpriteHandle     g_sprite       = NULL;
-uint8_t          mapData[]      = {
+ImageHandle   g_test_image   = NULL;
+ImageHandle   g_sprite_image = NULL;
+int           g_x            = 0;
+int           g_y            = 0;
+TileMapHandle g_tilemap      = NULL;
+SpriteHandle  g_sprite       = NULL;
+uint8_t       mapData[]      = {
     2,   3,   47,  48, 49, 49, 48, 49, 50, 3,  4,   48,  49,  48, 4,  5,  11,  12,  57,  58, 57, 57,  58, 57, 57,  57,
     57,  57,  57,  57, 13, 14, 40, 21, 66, 67, 66,  66,  67,  66, 66, 66, 66,  66,  66,  66, 22, 40,  49, 30, 74,  74,
     77,  77,  77,  77, 77, 77, 77, 77, 77, 77, 31,  49,  39,  39, 40, 38, 39,  40,  41,  42, 75, 10,  76, 10, 19,  20,
@@ -29,15 +29,15 @@ void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo inf
 }
 
 void game_init(void) {
-    g_test_image   = graphics_loadImageTable(162, 16, 16, pixelFormatPaletteRLE, tiles_data);
-    g_sprite_image = graphics_loadImageTable(48, 12, 17, pixelFormatPalette, my_sprite_data);
+    g_test_image   = graphics_newImage(162, 16, 16, pixelFormatPaletteRLE, tiles_data);
+    g_sprite_image = graphics_newImage(48, 12, 17, pixelFormatPalette, my_sprite_data);
     g_tilemap      = tilemap_newTilemap();
     g_sprite       = sprite_newSprite();
-    tilemap_setImageTable(g_tilemap, g_test_image);
+    tilemap_setImage(g_tilemap, g_test_image);
     tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 16, 16);
     tilemap_addTilemap(g_tilemap);
 
-    sprite_setImageTable(g_sprite, g_sprite_image);
+    sprite_setImage(g_sprite, g_sprite_image);
     sprite_setCollideRect(g_sprite, (Rect){0, 0, 40, 32});
     sprite_setCollisionResponseFunction(g_sprite, sprite_collidefunc);
     sprite_addSprite(g_sprite);

@@ -40,13 +40,13 @@ void sprite_updateAndDrawSprites(void) {
     // 更新行为
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i] && g_sprites[i]->updatefunc)
-            g_sprites[i]->updatefunc();
+            g_sprites[i]->updatefunc(g_sprites[i]);
     // 绘制图像
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i]) {
             SpriteHandle s = g_sprites[i];
             if (s->image != NULL) {
-                graphics_drawImageTable(s->image, s->x, s->y, s->idx, s->flip);
+                graphics_drawImage(s->image, s->x, s->y, s->idx, s->flip);
             }
 
             if ((s->div != 0) && (g_ticks % s->div == 0)) {
@@ -71,12 +71,7 @@ void sprite_getPosition(SpriteHandle sprite, int *x, int *y) {
     *y = sprite->y;
 }
 
-void sprite_setImage(SpriteHandle sprite, ImageHandle image, ImageFlip flip) {
-    sprite->image = graphics_tableFromImage(image);
-    sprite->flip  = flip;
-}
-
-void sprite_setImageTable(SpriteHandle sprite, ImageTableHandle table) { sprite->image = table; }
+void sprite_setImage(SpriteHandle sprite, ImageHandle image) { sprite->image = image; }
 
 void sprite_setZIndex(SpriteHandle sprite, int8_t zIndex);
 
