@@ -10,8 +10,8 @@ typedef struct {
     uint8_t *pixels;
 } InternalImage;
 
-static uint16_t (*vmem_display)[DISPLAY_WIDTH] = NULL;
-static InternalImage *current_render_target    = NULL;
+static Color (*vmem_display)[DISPLAY_WIDTH] = NULL;
+static InternalImage *current_render_target = NULL;
 static Rect           current_clip_rect;
 static uint16_t       default_palette[16] = {0x0,    0xef18, 0xb9c9, 0x7db6, 0x49ea, 0x6d2d, 0x2a0d, 0xddcb,
                                              0xb46d, 0x42cb, 0xbb09, 0x31a6, 0x73ae, 0x8d4c, 0x3df9, 0xbdd7};
@@ -132,7 +132,7 @@ static void wrapper_gfx_set_clip_rect(Rect rect) { current_clip_rect = rect; }
 static void wrapper_gfx_clear(Color color) {
     for (int x = 0; x < DISPLAY_WIDTH; x++) {
         for (int y = 0; y < DISPLAY_HEIGHT; y++) {
-            drawPixel(x, y, color);
+            vmem_display[y][x] = color;
         }
     }
 }
