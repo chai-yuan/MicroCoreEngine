@@ -41,6 +41,7 @@ void          tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles, int tilesW
 void          tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int tiley, uint8_t idx);
 int           tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley);
 void          tilemap_drawAtPoint(TileMapHandle m, int x, int y);
+
 void          tilemap_addTilemap(TileMapHandle tilemap);
 void          tilemap_removeTilemap(TileMapHandle tilemap);
 
