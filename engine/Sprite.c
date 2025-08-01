@@ -3,30 +3,26 @@
 SpriteHandle g_sprites[SPRITE_NUM] = {NULL};
 
 SpriteHandle sprite_newSprite(void) {
-    SpriteHandle sprite   = platform.mem_alloc(sizeof(Sprite));
-    sprite->image         = NULL;
-    sprite->updatefunc    = NULL;
-    sprite->collisionfunc = NULL;
-    sprite->idx           = 0;
-    sprite->div           = 0;
-    return sprite;
-}
-
-void sprite_freeSprite(SpriteHandle sprite);
-
-void sprite_addSprite(SpriteHandle sprite) {
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i] == NULL) {
+            SpriteHandle sprite   = platform.mem_alloc(sizeof(Sprite));
+            sprite->image         = NULL;
+            sprite->updatefunc    = NULL;
+            sprite->collisionfunc = NULL;
+            sprite->idx           = 0;
+            sprite->div           = 0;
+
             g_sprites[i] = sprite;
-            return;
+            return sprite;
         }
+    return NULL;
 }
 
-void sprite_removeSprite(SpriteHandle sprite) {
+void sprite_freeSprite(SpriteHandle sprite) {
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i] == sprite) {
             g_sprites[i] = NULL;
-            return;
+            platform.mem_free(sprite);
         }
 }
 
@@ -36,32 +32,11 @@ void sprite_setAnimation(SpriteHandle sprite, int begin, int end, int div) {
     sprite->div   = div;
 }
 
-void sprite_updateAndDrawSprites(void) {
-    // 更新行为
-    for (int i = 0; i < SPRITE_NUM; i++)
-        if (g_sprites[i] && g_sprites[i]->updatefunc)
-            g_sprites[i]->updatefunc(g_sprites[i]);
-    // 绘制图像
-    for (int i = 0; i < SPRITE_NUM; i++)
-        if (g_sprites[i]) {
-            SpriteHandle s = g_sprites[i];
-            if (s->image != NULL) {
-                graphics_drawImage(s->image, s->x, s->y, s->idx, s->flip);
-            }
-
-            if ((s->div != 0) && (g_ticks % s->div == 0)) {
-                s->idx++;
-                if (s->idx > s->end || s->idx <= s->begin)
-                    s->idx = s->begin;
-            }
-        }
-}
-
 void sprite_setImageFlip(SpriteHandle sprite, ImageFlip flip) { sprite->flip = flip; }
 
 ImageFlip sprite_getImageFlip(SpriteHandle sprite) { return sprite->flip; }
 
-void sprite_moveTo(SpriteHandle sprite, int x, int y) {
+void sprite_setPosition(SpriteHandle sprite, int x, int y) {
     sprite->x = x;
     sprite->y = y;
 }

@@ -16,7 +16,7 @@ typedef struct TileMap {
     ImageHandle image;
     uint8_t    *tiles;
     uint8_t    *collision;
-    int         tilesw, tilesh;
+    int         x, y, tilesw, tilesh;
 } TileMap;
 typedef struct Sprite {
     ImageHandle             image;

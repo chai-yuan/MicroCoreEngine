@@ -9,20 +9,12 @@ int           g_x            = 0;
 int           g_y            = 0;
 TileMapHandle g_tilemap      = NULL;
 SpriteHandle  g_sprite       = NULL;
-uint8_t       mapData[]      = {
-        1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4,
-        7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10,
-        13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 6, 15, 15, 15, 15, 15, 16,
-        13, 15, 15, 15, 15, 12, 23, 25, 29, 30, 15, 16,
-        7, 15, 15, 15, 15, 12, 17, 12, 24, 24, 15, 16,
-        13, 15, 15, 15, 15, 18, 23, 18, 15, 15, 15, 16,
-        19, 20, 20, 20, 20, 20, 17, 20, 20, 20, 20, 22
-      };
+uint8_t mapData[] = {1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  4,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  10,
+                     13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
+                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
+                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 6,  15, 15, 15, 15, 15, 16,
+                     13, 15, 15, 15, 15, 12, 23, 25, 29, 30, 15, 16, 7,  15, 15, 15, 15, 12, 17, 12, 24, 24, 15, 16,
+                     13, 15, 15, 15, 15, 18, 23, 18, 15, 15, 15, 16, 19, 20, 20, 20, 20, 20, 17, 20, 20, 20, 20, 22};
 
 void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
     if (info.normal.x != 0)
@@ -38,12 +30,10 @@ void game_init(void) {
     g_sprite       = sprite_newSprite();
     tilemap_setImage(g_tilemap, g_test_image);
     tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 12, 12);
-    tilemap_addTilemap(g_tilemap);
 
     sprite_setImage(g_sprite, g_sprite_image);
     sprite_setCollideRect(g_sprite, (Rect){0, 0, 40, 32});
     sprite_setCollisionResponseFunction(g_sprite, sprite_collidefunc);
-    sprite_addSprite(g_sprite);
     sprite_moveTo(g_sprite, 0, 0);
     INFO("Game initialized!\n");
 }
@@ -78,7 +68,4 @@ void game_loop(void) {
 
     // --- 渲染 ---
     graphics_clear(0);
-    tilemap_drawAtPoint(g_tilemap, 0, 0);
-    sprite_updateAndDrawSprites();
-    graphics_display();
 }

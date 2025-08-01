@@ -44,7 +44,7 @@ typedef struct {
 } platform_api_t;
 
 void platform_register_api(const platform_api_t api);
-void game_init(void);
-void game_loop(void);
+
+void game_tick(void);
 
 #endif // PLATFORM_PORTING_H

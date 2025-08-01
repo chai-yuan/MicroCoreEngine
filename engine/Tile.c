@@ -3,25 +3,24 @@
 TileMapHandle g_tilemaps[TILEMAP_NUM] = {NULL};
 
 TileMapHandle tilemap_newTilemap(void) {
-    TileMap *tile   = platform.mem_alloc(sizeof(TileMap));
-    tile->collision = NULL;
-    return tile;
-}
-void tilemap_freeTilemap(TileMapHandle tilemap) { platform.mem_free(tilemap); }
-
-void tilemap_addTilemap(TileMapHandle tilemap) {
-    for (int i = 0; i < TILEMAP_NUM; i++)
+    for (int i = 0; i < TILEMAP_NUM; i++) {
         if (g_tilemaps[i] == NULL) {
-            g_tilemaps[i] = tilemap;
-            return;
-        }
-}
+            TileMap *tile   = platform.mem_alloc(sizeof(TileMap));
+            tile->x         = 0;
+            tile->y         = 0;
+            tile->collision = NULL;
 
-void tilemap_removeTilemap(TileMapHandle tilemap) {
+            g_tilemaps[i] = tile;
+            return g_tilemaps[i];
+        }
+    }
+    return NULL;
+}
+void tilemap_freeTilemap(TileMapHandle tilemap) {
     for (int i = 0; i < TILEMAP_NUM; i++)
         if (g_tilemaps[i] == tilemap) {
+            platform.mem_free(tilemap);
             g_tilemaps[i] = NULL;
-            return;
         }
 }
 
@@ -55,20 +54,7 @@ int tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley) {
     return tilemap->tiles[tilex + tiley * tilemap->tilesw];
 }
 
-void tilemap_drawAtPoint(TileMapHandle m, int x, int y) {
-    int drawx, drawy = y;
-
-    for (int r = 0; r < m->tilesh; r++) {
-        drawx = x;
-        for (int c = 0; c < m->tilesw; c++) {
-            int idx = m->tiles[c + r * m->tilesw];
-
-            if (idx) {
-                graphics_drawImage(m->image, drawx, drawy, idx - 1, imageUnflipped);
-            }
-
-            drawx += m->image->w;
-        }
-        drawy += m->image->h;
-    }
+void tilemap_setPosition(TileMapHandle m, int x, int y) {
+    m->x = x;
+    m->y = y;
 }

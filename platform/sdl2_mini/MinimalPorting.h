@@ -18,7 +18,6 @@ typedef struct {
 
 void minimal_register_api(const minimal_api_t api);
 
-void game_init(void);
-void game_loop(void);
+void game_tick(void);
 
 #endif
