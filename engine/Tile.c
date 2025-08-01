@@ -2,12 +2,14 @@
 
 TileMapHandle g_tilemaps[TILEMAP_NUM] = {NULL};
 
-TileMapHandle tilemap_newTilemap(void) {
+TileMapHandle tilemap_newTilemap(int tilesWide, int tilesHigh) {
     for (int i = 0; i < TILEMAP_NUM; i++) {
         if (g_tilemaps[i] == NULL) {
             TileMap *tile   = platform.mem_alloc(sizeof(TileMap));
             tile->x         = 0;
             tile->y         = 0;
+            tile->tilesw    = tilesWide;
+            tile->tilesh    = tilesHigh;
             tile->collision = NULL;
 
             g_tilemaps[i] = tile;
@@ -40,11 +42,9 @@ void tilemap_getSize(TileMapHandle tilemap, int *tilesWide, int *tilesHigh) {
 
 void tilemap_getPixelSize(TileMapHandle tilemap, uint32_t *width, uint32_t *height);
 
-void tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles, int tilesWide, int tilesHigh) {
-    tilemap->tiles  = tiles;
-    tilemap->tilesw = tilesWide;
-    tilemap->tilesh = tilesHigh;
-}
+void tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles) { tilemap->tiles = tiles; }
+
+void tilemap_setCollision(TileMapHandle tilemap, uint8_t *collision) { tilemap->collision = collision; }
 
 void tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int tiley, uint8_t idx) {
     tilemap->tiles[tilex + tiley * tilemap->tilesw] = idx;

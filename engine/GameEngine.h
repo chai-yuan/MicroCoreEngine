@@ -191,10 +191,12 @@ void graphics_freeImage(ImageHandle image);
 
 /**
  * @brief   创建一个新的瓦片地图实例。
+ * @param   tilesWide 地图的宽度（图块数）。
+ * @param   tilesHigh 地图的高度（图块数）。
  * @return  一个指向新创建瓦片地图的句柄（TileMapHandle）。
  * @see     tilemap_freeTilemap()
  */
-TileMapHandle tilemap_newTilemap(void);
+TileMapHandle tilemap_newTilemap(int tilesWide, int tilesHigh);
 
 /**
  * @brief   释放一个瓦片地图实例及其相关资源。
@@ -249,7 +251,7 @@ void tilemap_getPixelSize(TileMapHandle tilemap, uint32_t *width, uint32_t *heig
  * @param   tilesWide `tiles`数组对应的宽度。
  * @param   tilesHigh `tiles`数组对应的高度。
  */
-void tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles, int tilesWide, int tilesHigh);
+void tilemap_setTiles(TileMapHandle tilemap, uint8_t *tiles);
 
 /**
  * @brief   设置地图上指定位置的图块索引。
@@ -268,6 +270,15 @@ void tilemap_setTileAtPosition(TileMapHandle tilemap, int tilex, int tiley, uint
  * @return  该位置的图块索引。如果坐标无效，则返回-1。
  */
 int tilemap_getTileAtPosition(TileMapHandle tilemap, int tilex, int tiley);
+
+/**
+ * @brief   批量设置瓦片地图的碰撞数据。
+ * @param   tilemap   瓦片地图句柄。
+ * @param   collision 一个一维数组，存储了地图上每个位置的碰撞掩码。
+ * @param   tilesWide `tiles`数组对应的宽度。
+ * @param   tilesHigh `tiles`数组对应的高度。
+ */
+void tilemap_setCollision(TileMapHandle tilemap, uint8_t *collision);
 
 /**
  * @brief   设置瓦片地图的绘制位置（卷轴位置）。

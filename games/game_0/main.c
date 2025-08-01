@@ -10,11 +10,17 @@ int           g_y            = 0;
 TileMapHandle g_tilemap      = NULL;
 SpriteHandle  g_sprite       = NULL;
 uint8_t mapData[] = {1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  4,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  10,
-                     13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16,
-                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 13, 15, 15, 15, 15, 6,  15, 15, 15, 15, 15, 16,
-                     13, 15, 15, 15, 15, 12, 23, 25, 29, 30, 15, 16, 7,  15, 15, 15, 15, 12, 17, 12, 24, 24, 15, 16,
-                     13, 15, 15, 15, 15, 18, 23, 18, 15, 15, 15, 16, 19, 20, 20, 20, 20, 20, 17, 20, 20, 20, 20, 22};
+                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10,
+                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10, 13, 15, 15, 15, 15, 15, 28, 29, 29, 30, 15, 10,
+                     13, 15, 15, 15, 15, 15, 40, 40, 40, 40, 15, 10, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10,
+                     13, 15, 28, 29, 30, 15, 15, 15, 15, 15, 15, 10, 7,  15, 40, 40, 40, 15, 15, 15, 15, 15, 15, 10,
+                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22};
+
+uint8_t cdata[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+                   0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                   0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+                   0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+                   0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
     if (info.normal.x != 0)
@@ -26,15 +32,17 @@ void sprite_collidefunc(SpriteHandle self, SpriteHandle other, CollisionInfo inf
 void game_init(void) {
     g_test_image   = graphics_newImage(48, 16, 16, pixelFormatPaletteRLE, tiles_data);
     g_sprite_image = graphics_newImage(48, 12, 17, pixelFormatPalette, my_sprite_data);
-    g_tilemap      = tilemap_newTilemap();
+    g_tilemap      = tilemap_newTilemap(12, 12);
     g_sprite       = sprite_newSprite();
     tilemap_setImage(g_tilemap, g_test_image);
-    tilemap_setTiles(g_tilemap, (uint8_t *)mapData, 12, 12);
+    tilemap_setTiles(g_tilemap, mapData);
+    tilemap_setCollision(g_tilemap, cdata);
 
     sprite_setImage(g_sprite, g_sprite_image);
-    sprite_setCollideRect(g_sprite, (Rect){0, 0, 40, 32});
+    sprite_setCollideRect(g_sprite, (Rect){0, 0, 12, 17});
     sprite_setCollisionResponseFunction(g_sprite, sprite_collidefunc);
-    sprite_moveTo(g_sprite, 0, 0);
+    sprite_setPosition(g_sprite, 20, 20);
+    sprite_setCollideMask(g_sprite, 1);
     INFO("Game initialized!\n");
 }
 
