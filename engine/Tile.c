@@ -23,6 +23,7 @@ void tilemap_freeTilemap(TileMapHandle tilemap) {
         if (g_tilemaps[i] == tilemap) {
             platform.mem_free(tilemap);
             g_tilemaps[i] = NULL;
+            return;
         }
 }
 

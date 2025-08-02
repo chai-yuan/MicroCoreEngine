@@ -53,13 +53,14 @@ void playerSpriteUpdate(SpriteHandle self) {
             sprite_setImage(bullet, g_bullet_image);
             sprite_setPosition(bullet, px + 10, py + 9);
             sprite_setUpdateFunction(bullet, buttetUpdate);
+            sprite_setCollideMask(bullet, 0x1);
+            sprite_setCollideRect(bullet, (Rect){0, 0, 1, 1});
             lastShot = 5;
-        } else {
-            lastShot--;
         }
     } else {
         sprite_setAnimation(g_sprite_gun, 0, 5, 5);
     }
+    lastShot--;
 }
 
 void zombieUpdate(SpriteHandle self) {
@@ -68,6 +69,11 @@ void zombieUpdate(SpriteHandle self) {
     sprite_moveWithCollisions(self, -1, 0);
     if (px < -20)
         sprite_freeSprite(self);
+}
+
+void zombieCollide(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
+    sprite_freeSprite(self);
+    sprite_freeSprite(other);
 }
 
 void game_init(void) {
@@ -95,12 +101,15 @@ void game_init(void) {
 void game_loop(void) {
     static int gameTick = 0;
 
-    if ((gameTick % 120) == 0) {
+    if ((gameTick % 50) == 0) {
         SpriteHandle zombie = sprite_newSprite();
         sprite_setImage(zombie, g_zombie_image);
         sprite_setPosition(zombie, 150, system_rand() % 110);
         sprite_setUpdateFunction(zombie, zombieUpdate);
+        sprite_setCollisionResponseFunction(zombie, zombieCollide);
         sprite_setAnimation(zombie, 0, 5, 5);
+        sprite_setCollideMask(zombie, 0x1);
+        sprite_setCollideRect(zombie, (Rect){0, 0, 14, 16});
     }
 
     graphics_clear(0);

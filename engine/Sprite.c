@@ -22,7 +22,8 @@ void sprite_freeSprite(SpriteHandle sprite) {
     for (int i = 0; i < SPRITE_NUM; i++)
         if (g_sprites[i] == sprite) {
             g_sprites[i] = NULL;
-            platform.mem_free(sprite);
+            // platform.mem_free(sprite);
+            return;
         }
 }
 
