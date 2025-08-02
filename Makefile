@@ -1,6 +1,6 @@
 PROJECT_NAME = MicroCoreEngine.elf
 
-GAME_NAME ?= game_0
+GAME_NAME ?= game_1
 
 SRCS_DIR = engine
 GAME_DIR = games

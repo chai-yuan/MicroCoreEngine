@@ -3,9 +3,9 @@
 
 #include "GameEngineDef.h"
 
-#define DISPLAY_WIDTH 200
-#define DISPLAY_HEIGHT 200
-#define VMEM_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT * 2)
+#define DISPLAY_WIDTH 160
+#define DISPLAY_HEIGHT 120
+#define VMEM_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT * 3)
 
 typedef struct {
     uint8_t *vmem;
