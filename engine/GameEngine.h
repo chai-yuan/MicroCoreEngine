@@ -185,6 +185,7 @@ void graphics_getImageSize(ImageHandle image, int *width, int *height);
  */
 void graphics_freeImage(ImageHandle image);
 
+
 //=============================================================================
 // 瓦片地图 API (TileMap API)
 //=============================================================================

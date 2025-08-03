@@ -12,12 +12,10 @@ ImageHandle   g_sprite_image = NULL, g_zombie_image = NULL;
 TileMapHandle g_tilemap = NULL;
 SpriteHandle  g_sprite = NULL, g_sprite_gun = NULL;
 
-uint8_t mapData[] = {1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  4,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  10,
-                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 16, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10,
-                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10, 13, 15, 15, 15, 15, 15, 28, 29, 29, 30, 15, 10,
-                     13, 15, 15, 15, 15, 15, 40, 40, 40, 40, 15, 10, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10,
-                     13, 15, 28, 29, 30, 15, 15, 15, 15, 15, 15, 10, 7,  15, 40, 40, 40, 15, 15, 15, 15, 15, 15, 10,
-                     13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22};
+uint8_t mapData[] = {7,  8,  24, 24, 24, 24, 24, 24, 24, 35, 22, 20, 6,  6,  4, 6, 6, 6, 17, 6,
+                     22, 20, 6,  15, 6,  6,  17, 6,  6,  16, 22, 20, 27, 6,  6, 6, 6, 6, 5,  6,
+                     22, 20, 6,  6,  6,  15, 6,  6,  6,  6,  22, 20, 6,  26, 6, 6, 6, 6, 6,  17,
+                     22, 20, 6,  6,  6,  6,  27, 6,  4,  6,  18, 19, 2,  2,  2, 2, 2, 2, 2,  74};
 
 void buttetUpdate(SpriteHandle self) {
     int px, py;
@@ -73,16 +71,17 @@ void zombieUpdate(SpriteHandle self) {
 
 void zombieCollide(SpriteHandle self, SpriteHandle other, CollisionInfo info) {
     sprite_freeSprite(self);
+    // sprite_setAnimation(self, 6, 11, 3);
     sprite_freeSprite(other);
 }
 
 void game_init(void) {
-    g_tilemap_image = graphics_newImage(48, 16, 16, pixelFormatPaletteRLE, tiles_data);
+    g_tilemap_image = graphics_newImage(77, 16, 16, pixelFormatPaletteRLE, tiles_data);
     g_sprite_image  = graphics_newImage(48, 12, 17, pixelFormatPalette, my_sprite_data);
     g_gun_imgae     = graphics_newImage(24, 16, 10, pixelFormatPalette, gun_data);
     g_bullet_image  = graphics_newImage(1, 6, 3, pixelFormatPalette, bullet_data);
     g_zombie_image  = graphics_newImage(12, 14, 16, pixelFormatPalette, zombieSmall_data);
-    g_tilemap       = tilemap_newTilemap(12, 12);
+    g_tilemap       = tilemap_newTilemap(10, 8);
     g_sprite        = sprite_newSprite();
     g_sprite_gun    = sprite_newSprite();
 
