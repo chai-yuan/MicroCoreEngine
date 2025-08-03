@@ -86,11 +86,7 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
         return 0;
 
     int size = 0;
-    if (format == pixelFormatPalette || format == pixelFormatPaletteRLE) {
-        size = width * height / 2;
-    } else {
-        ERROR("TODO");
-    }
+    size     = width * height / 2;
 
     img->width  = width;
     img->height = height;
@@ -116,6 +112,14 @@ static platform_image_t wrapper_gfx_create_image(int width, int height, PixelFor
                 count = count & 0x7f;
                 while (count--)
                     img->pixels[pixel_idx++] = ((const uint8_t *)data)[i++];
+            }
+        }
+    } else if (format == pixelFormatMonochrome) { // 单色模式
+        for (int i = 0; i < size; i += 4) {
+            uint8_t value = ((const uint8_t *)data)[i / 4];
+            for (int bit = 0; bit < 4; bit++){
+                img->pixels[i + bit] = ((value & 0x2) << 3) | (value & 0x1);
+                value = value >> 2;
             }
         }
     }
