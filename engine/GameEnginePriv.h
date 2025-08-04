@@ -28,6 +28,10 @@ typedef struct Sprite {
     SpriteUpdateFunction    updatefunc;
     SpriteCollisionFunction collisionfunc;
 } Sprite;
+typedef struct Font {
+    ImageHandle image;
+    int         char_begin;
+} Font;
 
 #define SPRITE_NUM 16
 extern SpriteHandle g_sprites[SPRITE_NUM];

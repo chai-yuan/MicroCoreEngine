@@ -185,6 +185,52 @@ void graphics_getImageSize(ImageHandle image, int *width, int *height);
  */
 void graphics_freeImage(ImageHandle image);
 
+//=============================================================================
+// 文字 API (Text API)
+//=============================================================================
+
+/**
+ * @brief   从一个包含字符网格的图像中创建一个新的位图字体。
+ * @details 该函数假设图像（字体图集）包含一个字符网格。
+ *
+ * @param   image        包含字体图集的图像句柄。此图像不应被释放，直到字体被释放。
+ * @param   char_begin   图集中起始图片代表的ascii编码位置。
+ * @return  一个指向新创建字体的句柄（FontHandle）。如果创建失败则返回NULL。
+ * @see     font_free()
+ */
+FontHandle font_newFont(ImageHandle image, int char_begin);
+
+/**
+ * @brief   释放一个字体资源，回收其占用的内存。
+ * @details 注意：此函数只释放字体本身的数据结构，不会释放创建字体时使用的 `atlas_image`。
+ *          图像资源需要单独调用 `graphics_freeImage()` 进行释放。
+ * @param   font 要释放的字体句柄。
+ * @see     font_newFromGrid()
+ */
+void font_free(FontHandle font);
+
+/**
+ * @brief   在当前绘制目标上绘制一行文本。
+ * @details 绘制操作会受到 `graphics_setDrawOffset()` 和 `graphics_setClipRect()` 的影响。
+ *          如果`charmap`中不存在某个字符，它将被忽略（或替换为空格）。
+ *
+ * @param   font  用于绘制的字体句柄。
+ * @param   text  要绘制的C风格字符串。
+ * @param   x     文本起始位置的X坐标（左上角）。
+ * @param   y     文本起始位置的Y坐标（左上角）。
+ */
+void font_drawText(FontHandle font, const char* text, int x, int y);
+
+/**
+ * @brief   测量给定文本使用指定字体渲染时所需的尺寸。
+ * @details 这对于UI布局非常有用，例如，在绘制之前计算居中对齐的位置。
+ *
+ * @param   font    用于测量的字体句柄。
+ * @param   text    要测量的C风格字符串。
+ * @param   width   [out] 用于接收文本总宽度的指针。
+ * @param   height  [out] 用于接收文本总高度的指针（通常等于字体的高度）。
+ */
+void font_measureText(FontHandle font, const char* text, int* width, int* height);
 
 //=============================================================================
 // 瓦片地图 API (TileMap API)

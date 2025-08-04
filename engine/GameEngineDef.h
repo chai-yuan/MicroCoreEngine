@@ -27,6 +27,7 @@ typedef enum { buttonLeft = 1, buttonRight = 2, buttonUp = 4, buttonDown = 8, bu
 typedef struct Image   *ImageHandle;
 typedef struct TileMap *TileMapHandle;
 typedef struct Sprite  *SpriteHandle;
+typedef struct Font    *FontHandle;
 
 typedef void (*SpriteUpdateFunction)(SpriteHandle self);
 typedef void (*SpriteCollisionFunction)(SpriteHandle self, SpriteHandle other, CollisionInfo info);
